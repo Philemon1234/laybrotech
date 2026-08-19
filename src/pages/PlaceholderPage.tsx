@@ -1,0 +1,13 @@
+import { Section } from '@/components/sections/Section';
+
+type PlaceholderPageProps = {
+  title: string;
+};
+
+export function PlaceholderPage({ title }: PlaceholderPageProps) {
+  return (
+    <Section>
+      <h1 className="type-h1 text-balance">{title}</h1>
+    </Section>
+  );
+}
