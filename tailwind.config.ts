@@ -25,7 +25,7 @@ const config = {
       },
       fontFamily: {
         sans: [
-          'Inter',
+          'DM Sans',
           'ui-sans-serif',
           'system-ui',
           'Segoe UI',
@@ -71,3 +71,4 @@ const config = {
 } satisfies Config;
 
 export default config;
+

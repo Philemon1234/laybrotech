@@ -1,6 +1,5 @@
-import { PlaceholderPage } from './PlaceholderPage';
+import { Hero } from '@/sections/home/Hero';
 
 export function HomePage() {
-  return <PlaceholderPage title="Laybrotech" />;
+  return <Hero />;
 }
-
