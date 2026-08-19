@@ -44,7 +44,7 @@ export function HeroSlide({ slide, isActive, isFirst }: HeroSlideProps) {
             <p className="text-[0.78rem] font-bold uppercase leading-5 tracking-normal text-[#f25a05] sm:text-sm md:text-[0.95rem]">
               {slide.eyebrow}
             </p>
-            <h1 className="mt-4 max-w-[42rem] text-[2rem] font-bold leading-[1.1] tracking-normal text-[#fff] min-[390px]:text-[2.25rem] sm:mt-5 sm:text-[3.25rem] lg:text-[4rem]">
+            <h1 className="mt-4 max-w-[42rem] text-[2rem] font-bold leading-[1.1] tracking-normal text-[#fff] min-[390px]:text-[2.25rem] sm:mt-5 sm:text-[3.25rem] lg:text-[3.65rem] xl:text-[4rem]">
               {slide.headline}
             </h1>
             <p className="mt-5 max-w-[40rem] text-[0.98rem] leading-7 text-[#f1e8df] sm:mt-6 sm:text-lg sm:leading-8">
@@ -55,7 +55,7 @@ export function HeroSlide({ slide, isActive, isFirst }: HeroSlideProps) {
                 {slide.primaryCta.label}
               </ButtonLink>
               <ButtonLink
-                className="h-12 w-full border-white/85 bg-transparent text-[#fff] hover:border-white hover:bg-white hover:text-[#18181b] sm:h-14 sm:w-auto"
+                className="h-12 w-full border-2 border-white/90 bg-transparent text-[#fff] hover:border-white hover:bg-white/95 hover:text-[#18181b] sm:h-14 sm:w-auto"
                 href={slide.secondaryCta.href}
                 variant="secondary"
                 size="lg"
@@ -69,3 +69,4 @@ export function HeroSlide({ slide, isActive, isFirst }: HeroSlideProps) {
     </div>
   );
 }
+

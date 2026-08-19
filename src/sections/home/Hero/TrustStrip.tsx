@@ -45,9 +45,10 @@ function cnMobileTrustItem(isLast: boolean) {
   const spanClass = isLast ? 'col-span-2 sm:col-span-1' : '';
 
   return [
-    'flex items-center gap-3 rounded-button bg-[#fff] px-3 py-3 sm:min-w-[14rem] sm:flex-1 sm:rounded-none sm:px-5 sm:py-6 lg:min-w-0 lg:px-6',
+    'flex items-center gap-3 rounded-button bg-[#fff] px-3 py-3 sm:min-w-[14rem] sm:flex-1 sm:rounded-none sm:px-5 sm:py-5 lg:min-w-0 lg:px-6 lg:py-6',
     spanClass,
   ]
     .filter(Boolean)
     .join(' ');
 }
+

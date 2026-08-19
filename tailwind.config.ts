@@ -47,7 +47,7 @@ const config = {
         button: ['0.9375rem', { lineHeight: '1.2', letterSpacing: '0' }],
       },
       maxWidth: {
-        container: '77.5rem',
+        container: '92rem',
         readable: '45rem',
         narrow: '37.5rem',
       },
@@ -71,4 +71,5 @@ const config = {
 } satisfies Config;
 
 export default config;
+
 

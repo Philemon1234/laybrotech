@@ -20,7 +20,7 @@
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
-    background: #fbfaf7;
+    background: #ffffff;
     color: #18181b;
     font-family: "DM Sans", ui-sans-serif, system-ui, Segoe UI, Roboto, Arial, sans-serif;
   }
@@ -236,5 +236,6 @@
     }
   }
 }
+
 
 
