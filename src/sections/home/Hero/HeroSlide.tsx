@@ -37,17 +37,17 @@ export function HeroSlide({ slide, isActive, isFirst }: HeroSlideProps) {
         <div className="mx-auto w-full max-w-container px-6 pb-48 pt-16 sm:px-8 sm:pb-40 md:px-10 md:pb-44 lg:px-16 xl:px-16">
           <div
             className={cn(
-              'max-w-[42.5rem] transition-[opacity,transform] duration-[720ms] ease-out',
+              'max-w-[60rem] transition-[opacity,transform] duration-[720ms] ease-out',
               isActive ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0',
             )}
           >
             <p className="text-[0.78rem] font-bold uppercase leading-5 tracking-normal text-[#f25a05] sm:text-sm md:text-[0.95rem]">
               {slide.eyebrow}
             </p>
-            <h1 className="mt-4 max-w-[42rem] text-[2rem] font-bold leading-[1.1] tracking-normal text-[#fff] min-[390px]:text-[2.25rem] sm:mt-5 sm:text-[3.25rem] lg:text-[3.65rem] xl:text-[4rem]">
+            <h1 className="mt-4 max-w-[60rem] text-[2rem] font-bold leading-[1.1] tracking-normal text-[#fff] min-[390px]:text-[2.25rem] sm:mt-5 sm:text-[3.25rem] lg:text-[3.65rem] xl:text-[4rem]">
               {slide.headline}
             </h1>
-            <p className="mt-5 max-w-[40rem] text-[0.98rem] leading-7 text-[#f1e8df] sm:mt-6 sm:text-lg sm:leading-8">
+            <p className="mt-5 max-w-[46rem] text-[0.98rem] leading-7 text-[#f1e8df] sm:mt-6 sm:text-lg sm:leading-8">
               {slide.body}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center">
@@ -55,7 +55,7 @@ export function HeroSlide({ slide, isActive, isFirst }: HeroSlideProps) {
                 {slide.primaryCta.label}
               </ButtonLink>
               <ButtonLink
-                className="h-12 w-full border-2 border-white/90 bg-transparent text-[#fff] hover:border-white hover:bg-white/95 hover:text-[#18181b] sm:h-14 sm:w-auto"
+                className="h-12 w-full border-2 border-white/90 !bg-transparent !text-white hover:border-white hover:!bg-white/10 hover:!text-white sm:h-14 sm:w-auto"
                 href={slide.secondaryCta.href}
                 variant="secondary"
                 size="lg"
@@ -69,4 +69,5 @@ export function HeroSlide({ slide, isActive, isFirst }: HeroSlideProps) {
     </div>
   );
 }
+
 

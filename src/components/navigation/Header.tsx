@@ -69,7 +69,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(true);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const firstServiceRef = useRef<HTMLAnchorElement>(null);
   const servicesButtonId = useId();
@@ -234,11 +234,11 @@ export function Header() {
       <div
         id={mobileMenuId}
         className={cn(
-          'fixed inset-x-0 top-[72px] z-40 max-h-[calc(100dvh-72px)] overflow-y-auto border-y border-[#e5e1dc] bg-[#fff] px-5 py-5 shadow-[0_20px_45px_rgb(23_23_23/0.16)] transition-all duration-smooth lg:hidden',
+          'fixed inset-x-0 top-[72px] z-40 h-[calc(100dvh-72px)] overflow-y-auto border-y border-[#e5e1dc] bg-[#fff] px-5 py-5 shadow-[0_20px_45px_rgb(23_23_23/0.16)] transition-all duration-smooth lg:hidden',
           isMobileOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0',
         )}
       >
-        <nav className="mx-auto max-w-container rounded-card bg-[#fff]" aria-label="Mobile navigation">
+        <nav className="mx-auto flex h-full max-w-container flex-col rounded-card bg-[#fff]" aria-label="Mobile navigation">
           <button
             className="flex w-full items-center justify-between rounded-button bg-[#fbfaf7] px-4 py-3 text-left font-semibold text-[#18181b]"
             type="button"
@@ -278,7 +278,7 @@ export function Header() {
             ))}
           </div>
 
-          <div className="mt-5 border-t border-[#e5e1dc] pt-5">
+          <div className="mt-auto border-t border-[#e5e1dc] pt-5">
             <a className="flex items-center gap-3 rounded-button bg-[#fbfaf7] px-4 py-3" href={supportPhoneHref}>
               <span className="flex size-10 items-center justify-center rounded-control bg-[#fff] text-[#f25a05]">
                 <Headphones className="size-5" aria-hidden="true" />
@@ -297,3 +297,6 @@ export function Header() {
     </header>
   );
 }
+
+
+

@@ -71,9 +71,9 @@ export const heroSlides: HeroSlide[] = [
 ];
 
 export const trustItems = [
-  { label: 'Meta Business Partner', value: 'Meta' },
-  { label: 'Google Partner', value: 'Google' },
   { label: 'Customer Satisfaction', value: '97%' },
   { label: 'Best Rated Digital Marketing', value: '4.5' },
   { label: 'Projects Completed', value: '353' },
 ];
+
+

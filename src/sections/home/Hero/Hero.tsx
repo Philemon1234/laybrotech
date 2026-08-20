@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 
 import { HeroControls } from './HeroControls';
 import { HeroSlide } from './HeroSlide';
@@ -52,7 +52,7 @@ export function Hero() {
 
   return (
     <section
-      className="relative bg-brand-dark pb-16 sm:pb-24"
+      className="relative bg-white pb-16 sm:pb-24"
       aria-label="Laybrotech homepage hero"
       onKeyDown={(event) => {
         if (event.key === 'ArrowLeft') {
