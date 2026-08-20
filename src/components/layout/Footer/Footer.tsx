@@ -1,4 +1,6 @@
-﻿import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import { cn } from '@/lib/cn';
 
 import logoUrl from '@/assets/LaybroTech-Logo.png';
 
@@ -22,9 +24,18 @@ function FooterLinkItem({ link }: { link: FooterLink }) {
   );
 }
 
-export function Footer() {
+type FooterProps = {
+  overlap?: boolean;
+};
+
+export function Footer({ overlap = true }: FooterProps) {
   return (
-    <footer className="relative -mt-44 bg-[#171717] px-5 pt-48 text-[#cfc8c0] sm:-mt-56 sm:px-6 sm:pt-56 lg:-mt-72 lg:pt-64">
+    <footer
+      className={cn(
+        'relative bg-[#171717] px-5 text-[#cfc8c0] sm:px-6',
+        overlap ? '-mt-44 pt-48 sm:-mt-56 sm:pt-56 lg:-mt-72 lg:pt-64' : 'pt-16 sm:pt-[4.5rem] lg:pt-20',
+      )}
+    >
       <div className="mx-auto w-full max-w-container">
         <div className="grid gap-10 border-b border-white/10 pb-8 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.8fr_0.9fr] lg:gap-12 lg:pb-10">
           <div>
@@ -58,7 +69,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col gap-4 py-5 text-sm text-[#a9a29b] sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 Laybrotech Ltd. All rights reserved.</p>
+          <p>� 2026 Laybrotech Ltd. All rights reserved.</p>
           <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label="Footer legal links">
             {footerLegalLinks.map((link) => (
               <FooterLinkItem key={link.label} link={link} />
@@ -69,3 +80,5 @@ export function Footer() {
     </footer>
   );
 }
+
+

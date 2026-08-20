@@ -1,0 +1,2 @@
+export { HostingPricing } from './HostingPricing';
+

@@ -1,0 +1,2 @@
+export { HostingHero } from './HostingHero';
+

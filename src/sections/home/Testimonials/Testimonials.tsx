@@ -1,11 +1,23 @@
-﻿import { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import { TestimonialCard } from './TestimonialCard';
 import { TestimonialModal } from './TestimonialModal';
 import { testimonials, type Testimonial } from './testimonialData';
 
-export function Testimonials() {
+type TestimonialsProps = {
+  eyebrow?: string;
+  heading?: string;
+  copy?: string;
+  items?: Testimonial[];
+};
+
+export function Testimonials({
+  eyebrow = 'Client Testimonials',
+  heading = 'What Our Clients Say',
+  copy = 'Hear from businesses and organisations that have trusted Laybrotech to build their websites, digital tools, and online presence.',
+  items = testimonials,
+}: TestimonialsProps) {
   const [activeTestimonial, setActiveTestimonial] = useState<Testimonial | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -26,12 +38,12 @@ export function Testimonials() {
 
   const scrollTestimonials = (direction: 'previous' | 'next') => {
     const isNext = direction === 'next';
-    const isWrappingForward = isNext && activeIndex === testimonials.length - 1;
+    const isWrappingForward = isNext && activeIndex === items.length - 1;
     const isWrappingBackward = !isNext && activeIndex === 0;
     const nextIndex = isWrappingForward
       ? 0
       : isWrappingBackward
-        ? testimonials.length - 1
+        ? items.length - 1
         : activeIndex + (isNext ? 1 : -1);
 
     setActiveIndex(nextIndex);
@@ -59,12 +71,12 @@ export function Testimonials() {
 
       <div className="mx-auto w-full max-w-container">
         <div className="mx-auto max-w-[43rem] text-center">
-          <p className="type-eyebrow">Client Testimonials</p>
+          <p className="type-eyebrow">{eyebrow}</p>
           <h2 id="testimonials-heading" className="mt-4 text-[2.15rem] font-semibold leading-tight text-[#18181b] sm:text-[2.65rem] lg:text-[3.15rem]">
-            What Our Clients Say
+            {heading}
           </h2>
           <p className="mx-auto mt-5 max-w-[43rem] text-base leading-7 text-[#5f5a56] sm:text-lg sm:leading-8">
-            Hear from businesses and organisations that have trusted Laybrotech to build their websites, digital tools, and online presence.
+            {copy}
           </p>
         </div>
 
@@ -91,7 +103,7 @@ export function Testimonials() {
             className="testimonial-slider flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 pt-10"
             aria-label="Client testimonial previews"
           >
-            {testimonials.map((testimonial) => (
+            {items.map((testimonial) => (
               <TestimonialCard key={testimonial.id} testimonial={testimonial} onOpen={setActiveTestimonial} />
             ))}
           </div>

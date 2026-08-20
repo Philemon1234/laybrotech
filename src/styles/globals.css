@@ -14,10 +14,12 @@
   html {
     min-width: 320px;
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
   }
 
   body {
     margin: 0;
+    overflow-y: scroll;
     min-width: 320px;
     min-height: 100vh;
     background: #ffffff;
@@ -236,6 +238,7 @@
     }
   }
 }
+
 
 
 

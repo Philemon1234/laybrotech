@@ -60,7 +60,7 @@ function Logo() {
 
 function navLinkClass({ isActive }: { isActive: boolean }) {
   return cn(
-    'rounded-control px-3 py-2 text-[0.95rem] font-semibold transition-colors duration-smooth hover:bg-brand-muted hover:text-brand-orange',
+    'rounded-control px-3 py-2 text-[0.95rem] font-semibold transition-colors duration-smooth hover:text-brand-orange',
     isActive ? 'text-brand-orange' : 'text-brand-text-primary',
   );
 }
@@ -144,8 +144,8 @@ export function Header() {
               <button
                 id={servicesButtonId}
                 className={cn(
-                  'inline-flex items-center gap-1.5 rounded-control px-3 py-2 text-[0.95rem] font-semibold transition-colors duration-smooth hover:bg-brand-muted hover:text-brand-orange',
-                  isServicesOpen ? 'bg-brand-muted text-brand-orange' : 'text-brand-text-primary',
+                  'inline-flex items-center gap-1.5 rounded-control px-3 py-2 text-[0.95rem] font-semibold transition-colors duration-smooth hover:text-brand-orange',
+                  isServicesOpen ? 'text-brand-orange' : 'text-brand-text-primary',
                 )}
                 type="button"
                 aria-expanded={isServicesOpen}
@@ -168,7 +168,7 @@ export function Header() {
                 role="menu"
                 aria-labelledby={servicesButtonId}
                 className={cn(
-                  'absolute left-0 top-full mt-3 w-[27rem] rounded-card border border-[#e5e1dc] bg-[#fff] p-3 shadow-[0_18px_45px_rgb(23_23_23/0.12)] transition-all duration-smooth',
+                  'absolute left-0 top-full mt-3 w-[27rem] rounded-card border border-[#e5e1dc] bg-[#fff] p-3 shadow-[0_18px_45px_rgb(23_23_23/0.12)] transition-all duration-smooth before:absolute before:-top-3 before:left-0 before:h-3 before:w-full before:content-[""]',
                   isServicesOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-1 opacity-0',
                 )}
               >
@@ -297,6 +297,8 @@ export function Header() {
     </header>
   );
 }
+
+
 
 
 

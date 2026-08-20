@@ -1,0 +1,2 @@
+export { HostingTrustBar } from './HostingTrustBar';
+
