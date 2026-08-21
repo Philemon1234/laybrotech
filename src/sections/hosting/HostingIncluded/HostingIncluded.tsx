@@ -27,9 +27,9 @@ export function HostingIncluded() {
           </p>
         </div>
 
-        <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2" aria-label="Included hosting features">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:gap-x-8 sm:gap-y-5" aria-label="Included hosting features">
           {includedFeatures.map(({ title, Icon }) => (
-            <div className="flex items-center gap-4 border-b border-[#e5e1dc] pb-5" key={title}>
+            <div className="flex min-h-[7.5rem] flex-col items-start gap-3 border-b border-[#e5e1dc] pb-5" key={title}>
               <span className="flex size-10 shrink-0 items-center justify-center rounded-control bg-[#fff4ed] text-[#f25a05]">
                 <Icon className="size-5" aria-hidden="true" />
               </span>
@@ -41,3 +41,4 @@ export function HostingIncluded() {
     </section>
   );
 }
+

@@ -1,16 +1,16 @@
-import { Activity, Headphones, Mail, RotateCcw, ShieldCheck } from 'lucide-react';
+import { Gauge, LifeBuoy, Palette, SearchCheck, Smartphone } from 'lucide-react';
 
 const trustItems = [
-  { label: 'SSL Included', Icon: ShieldCheck },
-  { label: '24/7 Monitoring', Icon: Activity },
-  { label: 'Local Support', Icon: Headphones },
-  { label: 'Website Backups', Icon: RotateCcw },
-  { label: 'Business Email Available', Icon: Mail },
+  { label: 'Mobile Responsive', Icon: Smartphone },
+  { label: 'SEO-Ready', Icon: SearchCheck },
+  { label: 'Custom Design', Icon: Palette },
+  { label: 'Fast Performance', Icon: Gauge },
+  { label: 'Ongoing Support', Icon: LifeBuoy },
 ];
 
-export function HostingTrustBar() {
+export function WebsiteDesignTrustBar() {
   return (
-    <section className="relative z-10 -mt-12 px-5 sm:px-6" aria-label="Hosting trust highlights">
+    <section className="relative z-10 -mt-12 px-5 sm:px-6" aria-label="Website design benefits">
       <div className="mx-auto w-full max-w-container overflow-hidden rounded-[1.35rem] border border-[#e5e1dc] bg-white shadow-[0_18px_42px_rgb(23_23_23/0.12)]">
         <div className="grid grid-cols-2 gap-0 lg:grid-cols-5">
           {trustItems.map(({ label, Icon }, index) => (

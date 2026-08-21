@@ -1,0 +1,2 @@
+export { WebsiteDesignTrustBar } from './WebsiteDesignTrustBar';
+
