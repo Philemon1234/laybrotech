@@ -19,7 +19,7 @@ const audiences = [
     copy: 'A dependable foundation for company websites, portfolios, landing pages, and service businesses that need to stay professional and available online.',
     benefits: ['Free SSL Certificate', 'Business Email', 'Website Backups'],
     cta: 'Explore Hosting Plans',
-    href: '/pricing',
+    href: '/contact',
     Icon: Building2,
     image: webDesignImage,
   },
@@ -32,7 +32,7 @@ const audiences = [
     copy: 'Hosting designed for growing e-commerce websites that need dependable performance, security, and resources as traffic and orders increase.',
     benefits: ['Reliable Performance', 'SSL Security', 'Scalable Resources'],
     cta: 'View Business Hosting',
-    href: '/pricing',
+    href: '/contact',
     Icon: ShoppingBag,
     image: digitalMarketingImage,
   },
@@ -45,7 +45,7 @@ const audiences = [
     copy: 'Host school websites, organisation portals, information platforms, and digital resources on infrastructure designed for reliability and accessibility.',
     benefits: ['Secure Hosting', 'Website Monitoring', 'Technical Support'],
     cta: 'Explore Hosting Plans',
-    href: '/pricing',
+    href: '/contact',
     Icon: GraduationCap,
     image: securityReliabilityImage,
   },
@@ -58,7 +58,7 @@ const audiences = [
     copy: 'A reliable environment for portfolios, professional websites, client projects, and growing digital services.',
     benefits: ['Multiple Website Support', 'cPanel Access', 'Business Email'],
     cta: 'Explore Business Hosting',
-    href: '/pricing',
+    href: '/contact',
     Icon: BriefcaseBusiness,
     image: softwareDevelopmentImage,
   },
@@ -217,6 +217,7 @@ export function HostingUseCases() {
     </section>
   );
 }
+
 
 
 

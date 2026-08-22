@@ -17,7 +17,7 @@ export function DigitalSolutions() {
             Digital Solutions for Business Growth.
           </h2>
           <p className="mx-auto mt-5 max-w-readable text-base leading-7 text-[#5f5a56] sm:text-lg sm:leading-8">
-            Websites, hosting, domains, email, software, and marketing tools built to help your business grow online.
+            Websites, hosting, software, and marketing services built to help your business grow online.
           </p>
         </div>
 
@@ -30,7 +30,7 @@ export function DigitalSolutions() {
         </div>
 
         <div className="mt-12 sm:mt-14 lg:mt-16">
-          <div className="grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-6">
+          <div className="mx-auto grid max-w-[48rem] items-stretch gap-5 sm:grid-cols-2 xl:gap-6">
             {services.map((service) => (
               <ServiceCard key={service.title} service={service} />
             ))}

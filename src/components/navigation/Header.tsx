@@ -1,13 +1,11 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import {
   ArrowRight,
-  BriefcaseBusiness,
   ChevronDown,
   Code2,
   Globe2,
   Headphones,
-  Mail,
   Megaphone,
   Menu,
   Server,
@@ -27,16 +25,12 @@ type ServiceItem = {
 };
 
 const serviceItems: ServiceItem[] = [
-  { title: 'Web Hosting', description: 'Fast, supported hosting for growing websites.', href: '/hosting', Icon: Server },
   { title: 'Website Design', description: 'Modern websites for local and regional brands.', href: '/website-design', Icon: Globe2 },
-  { title: 'Domain Registration', description: 'Find and manage your business domain.', href: '/domain-registration', Icon: BriefcaseBusiness },
-  { title: 'Business Email', description: 'Professional email for teams and organisations.', href: '/business-email', Icon: Mail },
   { title: 'Software Development', description: 'Custom systems, dashboards, and applications.', href: '/software-development', Icon: Code2 },
   { title: 'Digital Marketing', description: 'Campaigns, visibility, and growth support.', href: '/digital-marketing', Icon: Megaphone },
 ];
 
 const primaryNavItems = [
-  { label: 'Pricing & Plans', href: '/pricing' },
   { label: 'Projects', href: '/projects' },
   { label: 'Explore More', href: '/explore-more' },
 ];
@@ -70,6 +64,8 @@ export function Header() {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const location = useLocation();
+  const isServiceRoute = serviceItems.some((item) => item.href === location.pathname);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const firstServiceRef = useRef<HTMLAnchorElement>(null);
   const servicesButtonId = useId();
@@ -135,6 +131,10 @@ export function Header() {
           <Logo />
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
+            <NavLink className={navLinkClass} to="/hosting">
+              Web Hosting
+            </NavLink>
+
             <div
               ref={dropdownRef}
               className="relative"
@@ -145,7 +145,7 @@ export function Header() {
                 id={servicesButtonId}
                 className={cn(
                   'inline-flex items-center gap-1.5 rounded-control px-3 py-2 text-[0.95rem] font-semibold transition-colors duration-smooth hover:text-brand-orange',
-                  isServicesOpen ? 'text-brand-orange' : 'text-brand-text-primary',
+                  isServicesOpen || isServiceRoute ? 'text-brand-orange' : 'text-brand-text-primary',
                 )}
                 type="button"
                 aria-expanded={isServicesOpen}
@@ -239,8 +239,21 @@ export function Header() {
         )}
       >
         <nav className="mx-auto flex h-full max-w-container flex-col rounded-card bg-[#fff]" aria-label="Mobile navigation">
+          <NavLink
+            className={({ isActive }) =>
+              cn(
+                'mb-2 rounded-button bg-[#fff] px-4 py-3 font-semibold transition-colors duration-smooth hover:bg-[#f2f2ef]',
+                isActive ? 'text-brand-orange' : 'text-[#18181b]',
+              )
+            }
+            to="/hosting"
+            onClick={closeMobileMenu}
+          >
+            Web Hosting
+          </NavLink>
+
           <button
-            className="flex w-full items-center justify-between rounded-button bg-[#fbfaf7] px-4 py-3 text-left font-semibold text-[#18181b]"
+            className={cn('flex w-full items-center justify-between rounded-button bg-[#fbfaf7] px-4 py-3 text-left font-semibold transition-colors duration-smooth', isServiceRoute ? 'text-brand-orange' : 'text-[#18181b]')}
             type="button"
             aria-expanded={isMobileServicesOpen}
             onClick={() => setIsMobileServicesOpen((current) => !current)}
@@ -297,6 +310,7 @@ export function Header() {
     </header>
   );
 }
+
 
 
 

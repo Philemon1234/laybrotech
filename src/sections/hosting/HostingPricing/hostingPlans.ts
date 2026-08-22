@@ -26,7 +26,7 @@ export const hostingPlans: HostingPlan[] = [
     audience: 'Simple, reliable hosting for small websites, portfolios, and new businesses.',
     pricing: 'Contact for pricing',
     cta: 'Get Starter Hosting',
-    href: '/pricing',
+    href: '/contact',
     featureGroups: [
       {
         title: 'Core Hosting',
@@ -61,7 +61,7 @@ export const hostingPlans: HostingPlan[] = [
     audience: 'More power, storage, and support for growing business websites and organisations.',
     pricing: 'Contact for pricing',
     cta: 'Choose Business Hosting',
-    href: '/pricing',
+    href: '/contact',
     recommended: true,
     featureGroups: [
       {
@@ -127,4 +127,5 @@ export const hostingPlans: HostingPlan[] = [
     ],
   },
 ];
+
 

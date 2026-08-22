@@ -1,6 +1,5 @@
-import { PlaceholderPage } from './PlaceholderPage';
+import { Navigate } from 'react-router-dom';
 
 export function PricingPage() {
-  return <PlaceholderPage title="Pricing" />;
+  return <Navigate to="/hosting" replace />;
 }
-

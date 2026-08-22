@@ -5,6 +5,7 @@ import { Testimonials } from '@/sections/home/Testimonials';
 import { DesignedToPerform } from '@/sections/website-design/DesignedToPerform';
 import { WebsiteDesignHero } from '@/sections/website-design/WebsiteDesignHero';
 import { WebsiteDesignPortfolio } from '@/sections/website-design/WebsiteDesignPortfolio';
+import { WebsiteDesignPricing } from '@/sections/website-design/WebsiteDesignPricing';
 import { WebsiteDesignProcess } from '@/sections/website-design/WebsiteDesignProcess';
 import { WebsiteDesignServices } from '@/sections/website-design/WebsiteDesignServices';
 import { WebsiteDesignTrustBar } from '@/sections/website-design/WebsiteDesignTrustBar';
@@ -22,6 +23,7 @@ export function WebsiteDesignPage() {
       <WebsiteDesignServices />
       <WebsiteDesignPortfolio />
       <WebsiteDesignProcess />
+      <WebsiteDesignPricing />
       <WebsitePostLaunchSupport />
       <Testimonials
         eyebrow="Website Design Testimonials"
@@ -46,3 +48,4 @@ export function WebsiteDesignPage() {
     </>
   );
 }
+

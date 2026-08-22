@@ -1,4 +1,4 @@
-﻿import { Code2, Mail, Megaphone, Search, Server } from 'lucide-react';
+﻿import { Code2, Megaphone, Server } from 'lucide-react';
 
 import webDesignImage from '@/assets/images/services/web-design.jpg';
 import webHostingImage from '@/assets/images/services/web-hosting.jpg';
@@ -56,20 +56,6 @@ export const featuredServices: FeaturedService[] = [
 ];
 
 export const services: Service[] = [
-  {
-    title: 'Domain Registration',
-    description: 'Find and secure the right domain name for your business and build a professional online identity.',
-    cta: 'Find Your Domain',
-    href: '/domain-registration',
-    Icon: Search,
-  },
-  {
-    title: 'Business Email',
-    description: 'Build trust with professional email addresses using your own company domain.',
-    cta: 'Explore Business Email',
-    href: '/business-email',
-    Icon: Mail,
-  },
   {
     title: 'Software Development',
     description: 'Custom software and digital systems designed around the way your organisation works.',

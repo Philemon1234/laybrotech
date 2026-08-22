@@ -13,7 +13,6 @@ export const footerLinkGroups: FooterLinkGroup[] = [
     title: 'Quick Links',
     links: [
       { label: 'Services', href: '/hosting' },
-      { label: 'Pricing & Plans', href: '/pricing' },
       { label: 'Projects', href: '/projects' },
       { label: 'Blog', href: '/blog' },
       { label: 'Contact', href: '/contact' },
