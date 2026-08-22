@@ -1,4 +1,4 @@
-import { ArrowRight, Check } from 'lucide-react';
+﻿import { ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { cn } from '@/lib/cn';
@@ -36,9 +36,7 @@ export function FeaturedServiceShowcase({ service }: FeaturedServiceShowcaseProp
           <ul className="mt-7 grid gap-3" aria-label={`${service.title} benefits`}>
             {service.benefits.map((benefit) => (
               <li key={benefit} className="flex items-center gap-3 text-sm font-semibold text-[#18181b] sm:text-base">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#fff4ed] text-[#f25a05] ring-1 ring-[#f25a05]/20">
-                  <Check className="size-4" aria-hidden="true" />
-                </span>
+                <Check className="size-4 shrink-0 text-[#16a34a]" aria-hidden="true" />
                 {benefit}
               </li>
             ))}
@@ -66,4 +64,5 @@ export function FeaturedServiceShowcase({ service }: FeaturedServiceShowcaseProp
     </article>
   );
 }
+
 
