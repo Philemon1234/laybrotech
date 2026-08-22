@@ -1,4 +1,4 @@
-import { featuredServices, services } from './digitalSolutionsData';
+﻿import { featuredServices, services } from './digitalSolutionsData';
 import { FeaturedServiceShowcase } from './FeaturedServiceShowcase';
 import { ServiceCard } from './ServiceCard';
 
@@ -30,7 +30,7 @@ export function DigitalSolutions() {
         </div>
 
         <div className="mt-12 sm:mt-14 lg:mt-16">
-          <div className="mx-auto grid max-w-[48rem] items-stretch gap-5 sm:grid-cols-2 xl:gap-6">
+          <div className="mx-auto grid max-w-none items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-6">
             {services.map((service) => (
               <ServiceCard key={service.title} service={service} />
             ))}
@@ -40,4 +40,5 @@ export function DigitalSolutions() {
     </section>
   );
 }
+
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, BriefcaseBusiness, Building2, Check, Cloud, Database, HeartPulse, Layers3, MonitorSmartphone, Network, Rocket, School, Smartphone, Sparkles, UsersRound, Workflow, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -176,6 +176,7 @@ export function SoftwareIndustries() {
       ref={wrapperRef}
       className={cn('bg-[#fbf7f2]', isPinnedMode ? 'relative h-[calc(100svh-80px+410vh)]' : 'px-5 py-20 sm:px-6 sm:py-24 lg:py-28')}
       aria-label="Industries We Build For"
+      data-no-reveal
     >
       {isPinnedMode ? (
         <div ref={frameRef} className="sticky top-20 flex h-[calc(100svh-80px)] items-center overflow-hidden px-6 py-8">
@@ -383,6 +384,8 @@ export function SoftwareProjects() {
     </section>
   );
 }
+
+
 
 
 

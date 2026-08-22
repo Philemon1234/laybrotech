@@ -1,7 +1,8 @@
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+﻿import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import { cn } from '@/lib/cn';
+import { handleInternalNavigationClick } from '@/lib/navigation';
 
 type ButtonVariant = 'primary' | 'secondary' | 'dark' | 'ghost';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -41,7 +42,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 
 function buttonClassName(variant: ButtonVariant, size: ButtonSize, className?: string) {
   return cn(
-    'inline-flex shrink-0 items-center justify-center font-semibold transition-colors duration-smooth disabled:pointer-events-none disabled:cursor-not-allowed',
+    'group inline-flex shrink-0 items-center justify-center font-semibold transition-[background-color,border-color,color] duration-200 disabled:pointer-events-none disabled:cursor-not-allowed',
     variantClasses[variant],
     sizeClasses[size],
     className,
@@ -91,22 +92,33 @@ export function ButtonLink({
   className,
   children,
   href,
+  onClick,
   ...props
 }: ButtonLinkProps) {
+  const location = useLocation();
   const isInternal = href.startsWith('/');
   const content = <ButtonContent leftIcon={leftIcon} rightIcon={rightIcon}>{children}</ButtonContent>;
 
   if (isInternal) {
     return (
-      <Link className={buttonClassName(variant, size, className)} to={href} {...props}>
+      <Link
+        className={buttonClassName(variant, size, className)}
+        to={href}
+        onClick={(event) => {
+          onClick?.(event);
+          handleInternalNavigationClick(event, location.pathname, href);
+        }}
+        {...props}
+      >
         {content}
       </Link>
     );
   }
 
   return (
-    <a className={buttonClassName(variant, size, className)} href={href} {...props}>
+    <a className={buttonClassName(variant, size, className)} href={href} onClick={onClick} {...props}>
       {content}
     </a>
   );
 }
+

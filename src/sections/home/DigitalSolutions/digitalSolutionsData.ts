@@ -1,4 +1,4 @@
-﻿import { Code2, Megaphone, Server } from 'lucide-react';
+﻿import { Code2, Mail, Megaphone, Palette, Server } from 'lucide-react';
 
 import webDesignImage from '@/assets/images/services/web-design.jpg';
 import webHostingImage from '@/assets/images/services/web-hosting.jpg';
@@ -41,7 +41,7 @@ export const featuredServices: FeaturedService[] = [
   },
   {
     label: 'FEATURED SERVICE',
-    eyebrow: 'FAST \u2022 SECURE \u2022 RELIABLE',
+    eyebrow: 'FAST • SECURE • RELIABLE',
     title: 'Reliable Web Hosting Built for Growing Businesses.',
     description:
       'Fast, secure, and dependable hosting for business websites, online stores, organisations, and growing digital platforms, backed by technical support when you need it.',
@@ -69,5 +69,19 @@ export const services: Service[] = [
     cta: 'Explore Marketing',
     href: '/digital-marketing',
     Icon: Megaphone,
+  },
+  {
+    title: 'Email Marketing',
+    description: 'Professional email campaigns for newsletters, offers, updates, and customer follow-ups.',
+    cta: 'Explore Email',
+    href: '/digital-marketing',
+    Icon: Mail,
+  },
+  {
+    title: 'Brand Identity',
+    description: 'Clear visual direction and brand assets that help your business look consistent online.',
+    cta: 'Discuss Branding',
+    href: '/contact',
+    Icon: Palette,
   },
 ];

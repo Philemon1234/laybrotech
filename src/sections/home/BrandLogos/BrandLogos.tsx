@@ -1,4 +1,4 @@
-import { BrandLogoMarquee } from './BrandLogoMarquee';
+﻿import { BrandLogoMarquee } from './BrandLogoMarquee';
 import { brandLogoRowOne, brandLogoRowTwo } from './brandLogoData';
 
 export function BrandLogos() {
@@ -39,13 +39,13 @@ export function BrandLogos() {
 
         @media (min-width: 640px) {
           .brand-logo-marquee__track--offset {
-            margin-left: -132px;
+            margin-left: -176px;
           }
         }
 
         @media (min-width: 1024px) {
           .brand-logo-marquee__track--offset {
-            margin-left: -240px;
+            margin-left: -320px;
           }
         }
 
@@ -70,15 +70,16 @@ export function BrandLogos() {
         </h2>
       </div>
 
-      <div className="relative left-1/2 mt-7 w-screen -translate-x-1/2 sm:mt-8 lg:mt-9">
+      <div className="relative left-1/2 mt-9 w-screen -translate-x-1/2 sm:mt-10 lg:mt-12" data-no-reveal>
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-white to-transparent sm:w-16" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-white to-transparent sm:w-16" />
-        <BrandLogoMarquee logos={brandLogoRowOne} direction="left" duration="48s" />
+        <BrandLogoMarquee logos={brandLogoRowOne} direction="left" duration="78s" />
         <div className="mt-3 sm:mt-4">
-          <BrandLogoMarquee logos={brandLogoRowTwo} direction="right" duration="54s" offset />
+          <BrandLogoMarquee logos={brandLogoRowTwo} direction="right" duration="86s" offset />
         </div>
       </div>
     </section>
   );
 }
+
 

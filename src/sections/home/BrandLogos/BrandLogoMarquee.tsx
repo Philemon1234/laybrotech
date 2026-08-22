@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+﻿import type { CSSProperties } from 'react';
 
 import { cn } from '@/lib/cn';
 
@@ -11,9 +11,9 @@ type BrandLogoMarqueeProps = {
   offset?: boolean;
 };
 
-const logoSlotClass = 'flex h-14 w-36 shrink-0 items-center justify-center sm:h-16 sm:w-44 lg:h-20 lg:w-56';
-const logoImageClass = 'max-h-12 w-full max-w-full object-contain opacity-70 grayscale transition-[filter,opacity] duration-300 hover:opacity-100 hover:grayscale-0 sm:max-h-14 lg:max-h-20';
-const sequenceClass = 'flex items-center gap-5 pr-5 sm:gap-8 sm:pr-8 lg:gap-10 lg:pr-10';
+const logoSlotClass = 'flex h-16 w-44 shrink-0 items-center justify-center sm:h-20 sm:w-56 lg:h-24 lg:w-72';
+const logoImageClass = 'max-h-14 w-full max-w-full object-contain opacity-72 grayscale transition-[filter,opacity] duration-300 hover:opacity-100 hover:grayscale-0 sm:max-h-16 lg:max-h-24';
+const sequenceClass = 'flex items-center gap-7 pr-7 sm:gap-10 sm:pr-10 lg:gap-14 lg:pr-14';
 
 export function BrandLogoMarquee({ logos, direction, duration, offset = false }: BrandLogoMarqueeProps) {
   const logoSequence = [...logos, ...logos, ...logos, ...logos];
@@ -57,3 +57,4 @@ export function BrandLogoMarquee({ logos, direction, duration, offset = false }:
     </div>
   );
 }
+
