@@ -1,4 +1,4 @@
-﻿type SeoMeta = {
+type SeoMeta = {
   title: string;
   description: string;
 };
@@ -61,17 +61,19 @@ export const seoMetaByPath: Record<string, SeoMeta> = {
       'Explore more Laybrotech technology and digital services for businesses that need reliable online systems and support.',
   },
   '/blog': {
-    title: 'Blog | Digital Business Insights | Laybrotech',
+    title: 'Laybrotech Insights | Web Hosting, Websites & Digital Guides',
     description:
-      'Read Laybrotech insights on websites, hosting, domains, business email, software, marketing, and digital growth.',
+      'Explore practical Laybrotech insights on web hosting, websites, software, digital marketing, and business technology.',
   },
   '/contact': {
-    title: 'Contact Laybrotech | Talk to Sales or Support',
+    title: 'Contact Laybrotech | Web Hosting, Website Design & Software Services Uganda',
     description:
-      'Contact Laybrotech for website design, hosting, domains, business email, software development, digital marketing, and technical support.',
+      'Contact Laybrotech for web hosting, website design, software development, digital marketing, and business technology services in Uganda.',
   },
   '/design-system': {
     title: 'Design System | Laybrotech',
     description: 'Internal Laybrotech design system reference for brand styles, components, spacing, and typography.',
   },
 };
+
+
