@@ -1,185 +1,196 @@
 ﻿import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { AlertCircle, ArrowLeft, CheckCircle2, ImageIcon } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
 import { Footer } from '@/components/layout/Footer';
 import { FinalCTA } from '@/sections/home/FinalCTA';
-import type { BlogComment, BlogPost } from '@/data/blogData';
-import { addPendingComment, calculateReadTime, findPostBySlug, formatDate, getApprovedComments, getCategoryById, getRelatedPosts } from '@/lib/blogStore';
-
+import { calculateReadTime, formatDate, getApprovedComments, getPublicPostBySlug, getRelatedPosts, submitPendingComment } from '@/lib/supabaseBlog';
+import type { PublicBlogComment, PublicBlogPost } from '@/types/supabaseBlog';
 
 type CommentErrors = Partial<Record<'name' | 'email' | 'comment', string>>;
 
 export function BlogArticlePage() {
   const { slug = '' } = useParams();
-  const post = findPostBySlug(slug);
-  const [comments, setComments] = useState<BlogComment[]>(post ? getApprovedComments(post.id) : []);
+  const [post, setPost] = useState<PublicBlogPost | null>(null);
+  const [related, setRelated] = useState<PublicBlogPost[]>([]);
+  const [comments, setComments] = useState<PublicBlogComment[]>([]);
+  const [loading, setLoading] = useState(true);
   const [values, setValues] = useState({ name: '', email: '', comment: '' });
   const [errors, setErrors] = useState<CommentErrors>({});
   const [message, setMessage] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!post) return;
-    const title = post.seoTitle || post.title;
-    const description = post.seoDescription || post.excerpt;
-    document.title = title + ' | Laybrotech';
-    setMeta('meta[name="description"]', 'name', 'description', description);
-    setMeta('meta[property="og:title"]', 'property', 'og:title', title);
-    setMeta('meta[property="og:description"]', 'property', 'og:description', description);
-    setMeta('meta[property="og:image"]', 'property', 'og:image', post.featuredImageUrl);
-  }, [post]);
+    async function load() {
+      setLoading(true);
+      const loaded = await getPublicPostBySlug(slug);
+      setPost(loaded);
+      if (loaded) {
+        const [commentData, relatedData] = await Promise.all([getApprovedComments(loaded.id), getRelatedPosts(loaded, 5)]);
+        setComments(commentData);
+        setRelated(relatedData);
+        const title = loaded.seo_title || loaded.title;
+        const description = loaded.meta_description || loaded.excerpt || '';
+        document.title = title + ' | Laybrotech';
+        setMeta('meta[name="description"]', 'name', 'description', description);
+        setMeta('meta[property="og:title"]', 'property', 'og:title', title);
+        setMeta('meta[property="og:description"]', 'property', 'og:description', description);
+        if (loaded.featured_image_url) setMeta('meta[property="og:image"]', 'property', 'og:image', loaded.featured_image_url);
+        if (loaded.canonical_url) setCanonical(loaded.canonical_url);
+      }
+      setLoading(false);
+    }
+    void load().catch(() => setLoading(false));
+  }, [slug]);
 
-  if (!post) {
-    return <><section className="bg-white px-5 py-28 sm:px-6 lg:py-32"><div className="mx-auto max-w-[46rem] text-center"><p className="type-eyebrow">Article Not Found</p><h1 className="mt-4 text-[2.45rem] font-semibold leading-tight text-[#18181b]">This article is not available.</h1><Link className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#f25a05]" to="/blog"><ArrowLeft className="size-4" />Back to Blog</Link></div></section><Footer /></>;
-  }
+  if (loading) return <><section className="bg-white px-5 py-28 sm:px-6 lg:py-32"><div className="mx-auto max-w-[46rem] text-center"><p className="type-eyebrow">Loading Article</p><h1 className="mt-4 text-[2.45rem] font-semibold leading-tight text-[#18181b]">Preparing this insight.</h1></div></section><Footer /></>;
+  if (!post) return <><section className="bg-white px-5 py-28 sm:px-6 lg:py-32"><div className="mx-auto max-w-[46rem] text-center"><p className="type-eyebrow">Article Not Found</p><h1 className="mt-4 text-[2.45rem] font-semibold leading-tight text-[#18181b]">This article is not available.</h1><Link className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#f25a05]" to="/blog"><ArrowLeft className="size-4" />Back to Blog</Link></div></section><Footer /></>;
 
   const currentPost = post;
-  const category = getCategoryById(currentPost.categoryId);
-  const related = getRelatedPosts(currentPost, 4);
+  const category = currentPost.blog_categories;
 
   function updateValue(field: keyof typeof values, value: string) {
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
     setMessage('');
+    setSubmitError('');
   }
 
-  function submitComment(event: FormEvent<HTMLFormElement>) {
+  async function submitComment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting) return;
+
     const nextErrors: CommentErrors = {};
-    if (!values.name.trim()) nextErrors.name = 'Name is required.';
-    if (!values.email.trim()) nextErrors.email = 'Email is required.';
-    else if (!/^\S+@\S+\.\S+$/.test(values.email.trim())) nextErrors.email = 'Enter a valid email.';
-    if (!values.comment.trim()) nextErrors.comment = 'Comment is required.';
-    else if (values.comment.length > 1200) nextErrors.comment = 'Comment must be 1200 characters or fewer.';
+    const name = values.name.trim();
+    const email = values.email.trim();
+    const comment = values.comment.trim();
+
+    if (!name) nextErrors.name = 'Name is required.';
+    if (!email) nextErrors.email = 'Email is required.';
+    else if (!/^\S+@\S+\.\S+$/.test(email)) nextErrors.email = 'Enter a valid email.';
+    if (!comment) nextErrors.comment = 'Comment is required.';
+    else if (comment.length > 1200) nextErrors.comment = 'Comment must be 1200 characters or fewer.';
+
     setErrors(nextErrors);
+    setMessage('');
+    setSubmitError('');
     if (Object.keys(nextErrors).length) return;
-    addPendingComment({ postId: currentPost.id, name: values.name.trim(), email: values.email.trim(), comment: values.comment.trim() });
-    setValues({ name: '', email: '', comment: '' });
-    setComments(getApprovedComments(currentPost.id));
-    setMessage('Thanks. Your comment will appear after review.');
+
+    setSubmitting(true);
+    try {
+      await submitPendingComment({ postId: currentPost.id, name, email, comment });
+      setValues({ name: '', email: '', comment: '' });
+      setMessage('Thanks. Your comment has been submitted for review.');
+    } catch {
+      setSubmitError("We couldn't submit your comment. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
     <>
-      <article>
-        <section className="bg-[#18181b]" aria-labelledby="article-heading">
-          <div className="relative flex min-h-[78vh] w-full items-center justify-center overflow-hidden bg-[#18181b] sm:min-h-[82vh] lg:min-h-[calc(90vh-80px)]">
-            <img className="absolute inset-0 h-full w-full object-cover object-center" src={currentPost.featuredImageUrl} alt="" loading="eager" decoding="async" />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgb(10_10_10/0.38)_0%,rgb(10_10_10/0.54)_52%,rgb(10_10_10/0.68)_100%)]" aria-hidden="true" />
-            <div className="relative z-10 mx-auto max-w-[58rem] px-6 py-14 text-center sm:px-10">
-              <p className="text-xs font-bold uppercase tracking-normal text-[#ff7a2b]">{category?.name ?? 'Insights'}</p>
-              <h1 id="article-heading" className="mt-4 text-[clamp(2.6rem,8vw,4.4rem)] font-semibold leading-[1.05] text-white">{currentPost.title}</h1>
-              <p className="mx-auto mt-5 max-w-[45rem] text-base leading-7 text-[#f4ebe4] sm:text-lg sm:leading-8">{currentPost.excerpt}</p>
-              <p className="mt-6 text-xs font-bold uppercase tracking-normal text-[#d8d0c8]">{currentPost.authorName} - {formatDate(currentPost.publishedAt)} - {calculateReadTime(currentPost.content)} min read</p>
-            </div>
+      <article className="bg-white px-5 py-12 sm:px-6 sm:py-16 lg:py-20">
+        <div className="mx-auto grid w-full max-w-[1360px] gap-12 lg:grid-cols-[minmax(0,0.64fr)_minmax(22rem,0.36fr)] lg:items-start xl:gap-16">
+          <div className="min-w-0">
+            <Link className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-[#5f5a56] transition-colors hover:text-[#f25a05]" to="/blog"><ArrowLeft className="size-4" />Back to Blog</Link>
+            <FeaturedImage post={currentPost} />
+            <header className="mt-8 max-w-[820px]">
+              {category ? <CategoryChip category={category} /> : null}
+              <h1 className="mt-4 text-[clamp(2.35rem,5vw,3.35rem)] font-semibold leading-[1.08] tracking-normal text-[#18181b]">{currentPost.title}</h1>
+              {currentPost.excerpt ? <p className="mt-5 text-[1.08rem] leading-8 text-[#5f5a56] sm:text-[1.15rem]">{currentPost.excerpt}</p> : null}
+              <ArticleMeta post={currentPost} />
+            </header>
+            <div className="admin-article-body mt-12 max-w-[820px] text-[1.08rem] leading-8 text-[#332f2b] sm:text-[1.13rem] sm:leading-9" dangerouslySetInnerHTML={{ __html: currentPost.content ?? '' }} />
           </div>
-        </section>
-
-        <section className="bg-white px-5 py-20 sm:px-6 sm:py-24 lg:py-28">
-          <div className="mx-auto grid w-full max-w-container gap-12 lg:grid-cols-[minmax(0,0.7fr)_minmax(17rem,0.3fr)] lg:items-start">
-            <div className="min-w-0 text-[1.06rem] leading-8 text-[#332f2b] sm:text-[1.1rem] sm:leading-9">
-              {renderContent(currentPost.content)}
-            </div>
-            {related.length ? <RelatedSidebar posts={related} /> : null}
-          </div>
-        </section>
-      </article>
-
-      <section className="bg-white px-5 py-16 sm:px-6 sm:py-20 lg:py-24" aria-labelledby="comment-form-heading">
-        <div className="mx-auto w-full max-w-[46rem]">
-          {comments.length ? <div className="mb-10 grid gap-4">{comments.map((comment) => <div className="border-b border-[#ead8c8] pb-5" key={comment.id}><p className="font-bold text-[#18181b]">{comment.name}</p><p className="mt-1 text-xs font-bold uppercase text-[#766e67]">{formatDate(comment.createdAt)}</p><p className="mt-3 text-sm leading-6 text-[#5f5a56]">{comment.comment}</p></div>)}</div> : null}
-          <form onSubmit={submitComment} noValidate>
-            <h2 id="comment-form-heading" className="text-[1.8rem] font-semibold leading-tight text-[#18181b]">Leave a Comment</h2>
-            <CommentField label="Name" error={errors.name}><input className={fieldClass(Boolean(errors.name))} value={values.name} autoComplete="name" onChange={(event) => updateValue('name', event.target.value)} /></CommentField>
-            <CommentField label="Email" error={errors.email}><input className={fieldClass(Boolean(errors.email))} type="email" value={values.email} autoComplete="email" onChange={(event) => updateValue('email', event.target.value)} /></CommentField>
-            <CommentField label="Comment" error={errors.comment}><textarea className={fieldClass(Boolean(errors.comment), true)} value={values.comment} maxLength={1200} onChange={(event) => updateValue('comment', event.target.value)} /></CommentField>
-            {message ? <p className="mt-4 rounded-[0.85rem] border border-[#ead8c8] bg-white px-4 py-3 text-sm font-bold text-[#5f5a56]">{message}</p> : null}
-            <button className="mt-6 inline-flex h-12 items-center justify-center rounded-button bg-[#f25a05] px-6 text-sm font-bold text-white transition-colors duration-smooth hover:bg-[#d94f04]" type="submit">Submit Comment</button>
-          </form>
+          {related.length ? <TrendingSidebar posts={related} /> : null}
         </div>
-      </section>
-
-      <FinalCTA heading="Need Help With Your Digital Project?" primaryLabel="Start Your Project" primaryHref="/contact" secondaryLabel="Talk to Sales" secondaryHref="/contact" />
-      <Footer />
+      </article>
+      {currentPost.allow_comments ? <CommentsSection comments={comments} errors={errors} message={message} submitError={submitError} submitting={submitting} values={values} onChange={updateValue} onSubmit={submitComment} /> : null}
+      <FinalCTA heading="Need Help With Your Digital Project?" primaryLabel="Start Your Project" primaryHref="/contact" secondaryLabel="Talk to Sales" secondaryHref="/contact" /><Footer />
     </>
   );
 }
 
-function RelatedSidebar({ posts }: { posts: BlogPost[] }) {
+function FeaturedImage({ post }: { post: PublicBlogPost }) {
+  if (!post.featured_image_url) return <div className="grid aspect-[16/10] w-full place-items-center rounded-[0.85rem] bg-[#f7f7f6] text-[#766e67]"><ImageIcon className="size-10" aria-hidden="true" /><span className="sr-only">No featured image available</span></div>;
+  return <img className="aspect-[16/10] w-full rounded-[0.85rem] object-cover object-center" src={post.featured_image_url} alt={post.featured_image_alt || post.title} loading="eager" decoding="async" />;
+}
+
+function ArticleMeta({ post }: { post: PublicBlogPost }) {
+  const author = post.author_name || 'Laybrotech Team';
   return (
-    <aside className="lg:sticky lg:top-28" aria-labelledby="related-articles-heading">
-      <p className="type-eyebrow" id="related-articles-heading">Related Articles</p>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-        {posts.map((post) => <RelatedCard key={post.id} post={post} />)}
+    <div className="mt-7 flex flex-col gap-4 border-y border-[#e8e8e8] py-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center gap-3">
+        <div className="grid size-11 shrink-0 place-items-center rounded-full bg-[#fff0e8] text-sm font-bold uppercase text-[#b84608]" aria-hidden="true">{getInitials(author)}</div>
+        <div>
+          <p className="text-sm font-bold text-[#18181b]">{author}</p>
+          <p className="mt-0.5 text-sm text-[#766e67]">Laybrotech Team</p>
+        </div>
+      </div>
+      <p className="text-sm font-bold uppercase leading-6 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</p>
+    </div>
+  );
+}
+
+function CategoryChip({ category }: { category: NonNullable<PublicBlogPost['blog_categories']> }) {
+  return <Link className="inline-flex rounded-full bg-[#fff0e8] px-3 py-1.5 text-xs font-bold uppercase tracking-normal text-[#d94f04] transition-colors hover:bg-[#f25a05] hover:text-white" to={`/blog/category/${category.slug}`}>{category.name}</Link>;
+}
+
+function TrendingSidebar({ posts }: { posts: PublicBlogPost[] }) {
+  return (
+    <aside className="lg:sticky lg:top-24" aria-labelledby="trending-articles-heading">
+      <div className="overflow-hidden rounded-[0.75rem] bg-[#18181b]">
+        <div className="bg-[linear-gradient(135deg,#f25a05_0%,#c94305_46%,#18181b_46%,#18181b_100%)] px-5 py-6">
+          <h2 id="trending-articles-heading" className="max-w-[13rem] text-2xl font-semibold leading-tight text-white">Trending on Laybrotech</h2>
+        </div>
+      </div>
+      <div className="mt-5 divide-y divide-[#e8e8e8]">
+        {posts.map((post) => <TrendingItem key={post.id} post={post} />)}
       </div>
     </aside>
   );
 }
 
-function RelatedCard({ post }: { post: BlogPost }) {
-  const category = getCategoryById(post.categoryId);
+function TrendingItem({ post }: { post: PublicBlogPost }) {
+  const category = post.blog_categories;
   return (
-    <Link className="group overflow-hidden rounded-[1rem] border border-[#e7e2dd] bg-white transition-colors duration-smooth hover:border-[#f25a05]/40" to={`/blog/${post.slug}`}>
-      <img className="aspect-[4/3] w-full object-cover object-center transition duration-500 group-hover:scale-[1.018]" src={post.featuredImageUrl} alt="" loading="lazy" decoding="async" />
-      <span className="block p-4">
-        <span className="text-[0.67rem] font-bold uppercase tracking-normal text-[#f25a05]">{category?.name ?? 'Insights'}</span>
-        <span className="mt-2 block text-sm font-semibold leading-5 text-[#18181b]">{post.title}</span>
-        <span className="mt-2 block text-[0.72rem] font-bold uppercase text-[#766e67]">{formatDate(post.publishedAt)} - {calculateReadTime(post.content)} min read</span>
-      </span>
-    </Link>
+    <article className="grid gap-4 py-5 first:pt-0 md:grid-cols-[9.5rem_minmax(0,1fr)] lg:grid-cols-[8.5rem_minmax(0,1fr)] xl:grid-cols-[10rem_minmax(0,1fr)]">
+      <Link className="group overflow-hidden rounded-[0.5rem] bg-[#f7f7f6]" to={`/blog/${post.slug}`}><img className="aspect-[4/3] w-full object-cover object-center transition duration-300 group-hover:scale-[1.018]" src={post.featured_image_url ?? ''} alt={post.featured_image_alt || post.title} loading="lazy" decoding="async" /></Link>
+      <div className="min-w-0">
+        <h3 className="line-clamp-3 text-[1rem] font-bold leading-6 text-[#18181b]"><Link className="transition-colors hover:text-[#f25a05]" to={`/blog/${post.slug}`}>{post.title}</Link></h3>
+        <p className="mt-2 text-xs font-bold uppercase leading-5 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</p>
+        {category ? <Link className="mt-2 inline-flex text-xs font-bold text-[#f25a05] transition-colors hover:text-[#d94f04]" to={`/blog/category/${category.slug}`}>{category.name}</Link> : null}
+      </div>
+    </article>
   );
 }
 
-function renderContent(content: string) {
-  return content.split('\n\n').map((block, index) => renderBlock(block.trim(), index)).filter(Boolean);
+function CommentsSection({ comments, errors, message, submitError, submitting, values, onChange, onSubmit }: { comments: PublicBlogComment[]; errors: CommentErrors; message: string; submitError: string; submitting: boolean; values: { name: string; email: string; comment: string }; onChange: (field: keyof typeof values, value: string) => void; onSubmit: (event: FormEvent<HTMLFormElement>) => void }) {
+  return (
+    <section className="bg-white px-5 pb-16 sm:px-6 sm:pb-20 lg:pb-24" aria-labelledby="comments-heading">
+      <div className="mx-auto w-full max-w-[820px] border-t border-[#eaeaea] pt-12 sm:pt-14">
+        <h2 id="comments-heading" className="text-[1.75rem] font-semibold leading-tight text-[#18181b]">Comments{comments.length ? ` (${comments.length})` : ''}</h2>
+        <div className="mt-6">{comments.length ? <div className="divide-y divide-[#eaeaea]">{comments.map((comment) => <CommentItem comment={comment} key={comment.id} />)}</div> : <p className="text-[1rem] leading-7 text-[#5f5a56]">No comments yet. Be the first to share your thoughts.</p>}</div>
+        <form className="mt-10" onSubmit={onSubmit} noValidate>
+          <div><h3 className="text-[1.55rem] font-semibold leading-tight text-[#18181b]">Leave a Comment</h3><p className="mt-2 text-sm leading-6 text-[#766e67]">Your email address will not be published.</p></div>
+          <div aria-live="polite" className="mt-6 space-y-3">{message ? <p className="inline-flex items-start gap-2 rounded-[0.75rem] border border-[#b8e2c2] bg-[#f0fbf3] px-4 py-3 text-sm font-bold leading-6 text-[#166534]"><CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />{message}</p> : null}{submitError ? <p className="inline-flex items-start gap-2 rounded-[0.75rem] border border-[#f3c4be] bg-[#fff5f4] px-4 py-3 text-sm font-bold leading-6 text-[#b42318]"><AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />{submitError}</p> : null}</div>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2"><CommentField label="Name" error={errors.name}><input className={fieldClass(Boolean(errors.name))} value={values.name} placeholder="Your name" autoComplete="name" onChange={(event) => onChange('name', event.target.value)} /></CommentField><CommentField label="Email" error={errors.email}><input className={fieldClass(Boolean(errors.email))} type="email" value={values.email} placeholder="you@example.com" autoComplete="email" onChange={(event) => onChange('email', event.target.value)} /></CommentField></div>
+          <CommentField label="Comment" error={errors.comment}><textarea className={fieldClass(Boolean(errors.comment), true)} value={values.comment} placeholder="Share your thoughts..." maxLength={1200} onChange={(event) => onChange('comment', event.target.value)} /></CommentField>
+          <button className="mt-6 inline-flex h-11 items-center justify-center rounded-[0.65rem] bg-[#f25a05] px-5 text-sm font-bold text-white transition-colors duration-200 hover:bg-[#d94f04] disabled:cursor-not-allowed disabled:bg-[#f6b38c]" type="submit" disabled={submitting}>{submitting ? 'Submitting...' : 'Submit Comment'}</button>
+        </form>
+      </div>
+    </section>
+  );
 }
 
-function renderBlock(block: string, index: number) {
-  if (!block) return null;
-  if (block.startsWith('## ')) return <h2 className="mb-5 mt-12 text-[1.85rem] font-semibold leading-tight text-[#18181b] first:mt-0" key={index}>{renderInline(block.replace('## ', ''))}</h2>;
-  if (block.startsWith('### ')) return <h3 className="mb-4 mt-9 text-[1.35rem] font-semibold leading-tight text-[#18181b]" key={index}>{renderInline(block.replace('### ', ''))}</h3>;
-  if (block.startsWith('> ')) return <blockquote className="my-8 border-l-4 border-[#f25a05] bg-[#fff4ed] px-5 py-4 font-semibold text-[#332f2b]" key={index}>{renderInline(block.replace(/^>\s?/gm, ''))}</blockquote>;
-  if (block.startsWith('![')) return renderImage(block, index);
-  if (isTable(block)) return renderTable(block, index);
-  if (/^-\s+/m.test(block) && block.split('\n').every((line) => line.startsWith('- '))) return <ul className="my-7 list-disc space-y-2 pl-6" key={index}>{block.split('\n').map((item) => <li key={item}>{renderInline(item.replace('- ', ''))}</li>)}</ul>;
-  if (/^\d+\.\s+/m.test(block) && block.split('\n').every((line) => /^\d+\.\s+/.test(line))) return <ol className="my-7 list-decimal space-y-2 pl-6" key={index}>{block.split('\n').map((item) => <li key={item}>{renderInline(item.replace(/^\d+\.\s+/, ''))}</li>)}</ol>;
-  if (block.startsWith('```')) return <pre className="my-8 overflow-x-auto rounded-[1rem] bg-[#18181b] p-5 text-sm leading-6 text-[#fffaf5]" key={index}><code>{block.replace(/^```\w*\n?/, '').replace(/```$/, '')}</code></pre>;
-  return <p className="mb-6 max-w-[48rem]" key={index}>{renderInline(block)}</p>;
-}
-
-function renderInline(text: string): ReactNode[] {
-  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g).filter(Boolean);
-  return parts.map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) return <strong key={index}>{part.slice(2, -2)}</strong>;
-    if (part.startsWith('*') && part.endsWith('*')) return <em key={index}>{part.slice(1, -1)}</em>;
-    if (part.startsWith('`') && part.endsWith('`')) return <code className="rounded bg-[#fff4ed] px-1.5 py-0.5 text-[0.95em] text-[#18181b]" key={index}>{part.slice(1, -1)}</code>;
-    const link = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(part);
-    if (link) return <a className="font-bold text-[#f25a05] underline decoration-[#f25a05]/30 underline-offset-4 hover:text-[#d94f04]" href={link[2]} key={index}>{link[1]}</a>;
-    return part;
-  });
-}
-
-function isTable(block: string) {
-  const lines = block.split('\n').filter(Boolean);
-  return lines.length >= 2 && lines.every((line) => line.includes('|')) && /^\|?\s*:?-{3,}:?/.test(lines[1].trim());
-}
-
-function renderTable(block: string, index: number) {
-  const rows = block.split('\n').map((line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => cell.trim()));
-  const header = rows[0];
-  const body = rows.slice(2);
-  return <div className="my-9 overflow-x-auto rounded-[1rem] border border-[#ead8c8]" key={index}><table className="min-w-[42rem] w-full border-collapse bg-white text-left text-sm leading-6"><thead className="bg-[#fff4ed] text-[#18181b]"><tr>{header.map((cell) => <th className="border-b border-[#ead8c8] px-4 py-3 font-bold" key={cell}>{renderInline(cell)}</th>)}</tr></thead><tbody>{body.map((row, rowIndex) => <tr className="border-b border-[#f0e2d6] last:border-b-0" key={rowIndex}>{row.map((cell, cellIndex) => <td className="px-4 py-3 align-top text-[#5f5a56]" key={cellIndex}>{renderInline(cell)}</td>)}</tr>)}</tbody></table></div>;
-}
-
-function renderImage(block: string, index: number) {
-  const match = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(block);
-  if (!match) return <p className="mb-6" key={index}>{block}</p>;
-  return <img className="my-9 w-full rounded-[1.25rem] object-cover" src={match[2]} alt={match[1]} key={index} loading="lazy" decoding="async" />;
+function CommentItem({ comment }: { comment: PublicBlogComment }) {
+  return <article className="flex gap-4 py-6 first:pt-0"><div className="grid size-10 shrink-0 place-items-center rounded-full bg-[#fff0e8] text-sm font-bold uppercase text-[#b84608]" aria-hidden="true">{getInitials(comment.name)}</div><div className="min-w-0"><div className="flex flex-wrap items-baseline gap-x-3 gap-y-1"><h3 className="text-[1rem] font-bold leading-6 text-[#18181b]">{comment.name}</h3><p className="text-sm text-[#766e67]">{formatDate(comment.created_at)}</p></div><p className="mt-2 text-[1rem] leading-7 text-[#332f2b]">{comment.comment}</p></div></article>;
 }
 
 function CommentField({ label, error, children }: { label: string; error?: string; children: ReactNode }) { return <label className="mt-5 block"><span className="text-sm font-bold text-[#18181b]">{label}</span><span className="mt-2 block">{children}</span>{error ? <span className="mt-2 block text-sm font-bold text-[#b42318]">{error}</span> : null}</label>; }
-function fieldClass(error: boolean, multiline = false) { return 'w-full rounded-[0.9rem] border bg-white px-4 text-sm font-semibold text-[#18181b] outline-none transition-colors focus:border-[#f25a05] focus:ring-4 focus:ring-[#f25a05]/10 ' + (multiline ? 'min-h-[9rem] py-3 ' : 'h-12 ') + (error ? 'border-[#b42318]' : 'border-[#e5ded6]'); }
+function fieldClass(error: boolean, multiline = false) { return 'w-full rounded-[0.65rem] border bg-white px-4 text-[0.95rem] font-medium text-[#18181b] outline-none transition-colors placeholder:text-[#aaa29a] focus:border-[#f25a05] focus:ring-2 focus:ring-[#f25a05]/10 ' + (multiline ? 'min-h-[9rem] resize-y py-3 leading-7 ' : 'h-11 ') + (error ? 'border-[#b42318]' : 'border-[#e1ddd8]'); }
+function getInitials(name: string) { const parts = name.trim().split(/\s+/).filter(Boolean); return ((parts[0]?.[0] ?? '?') + (parts[1]?.[0] ?? '')).toUpperCase(); }
 function setMeta(selector: string, attr: 'name' | 'property', key: string, content: string) { let el = document.head.querySelector<HTMLMetaElement>(selector); if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); } el.setAttribute('content', content); }
-
-
-
+function setCanonical(href: string) { let el = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]'); if (!el) { el = document.createElement('link'); el.rel = 'canonical'; document.head.appendChild(el); } el.href = href; }
