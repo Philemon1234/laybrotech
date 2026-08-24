@@ -156,13 +156,15 @@ function TrendingSidebar({ posts }: { posts: PublicBlogPost[] }) {
 function TrendingItem({ post }: { post: PublicBlogPost }) {
   const category = post.blog_categories;
   return (
-    <article className="grid gap-4 py-5 first:pt-0 md:grid-cols-[9.5rem_minmax(0,1fr)] lg:grid-cols-[8.5rem_minmax(0,1fr)] xl:grid-cols-[10rem_minmax(0,1fr)]">
-      <Link className="group overflow-hidden rounded-[0.5rem] bg-[#f7f7f6]" to={`/blog/${post.slug}`}><img className="aspect-[4/3] w-full object-cover object-center transition duration-300 group-hover:scale-[1.018]" src={post.featured_image_url ?? ''} alt={post.featured_image_alt || post.title} loading="lazy" decoding="async" /></Link>
-      <div className="min-w-0">
-        <h3 className="line-clamp-3 text-[1rem] font-bold leading-6 text-[#18181b]"><Link className="transition-colors hover:text-[#f25a05]" to={`/blog/${post.slug}`}>{post.title}</Link></h3>
-        <p className="mt-2 text-xs font-bold uppercase leading-5 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</p>
-        {category ? <Link className="mt-2 inline-flex text-xs font-bold text-[#f25a05] transition-colors hover:text-[#d94f04]" to={`/blog/category/${category.slug}`}>{category.name}</Link> : null}
-      </div>
+    <article>
+      <Link className="group grid cursor-pointer gap-4 py-5 first:pt-0 md:grid-cols-[9.5rem_minmax(0,1fr)] lg:grid-cols-[8.5rem_minmax(0,1fr)] xl:grid-cols-[10rem_minmax(0,1fr)]" to={`/blog/${post.slug}`} aria-label={`Read ${post.title}`}>
+        <span className="overflow-hidden rounded-[0.5rem] bg-[#f7f7f6]"><img className="aspect-[4/3] w-full object-cover object-center transition duration-300 group-hover:scale-[1.018]" src={post.featured_image_url ?? ''} alt={post.featured_image_alt || post.title} loading="lazy" decoding="async" /></span>
+        <span className="min-w-0">
+          <span className="line-clamp-3 block text-[1rem] font-bold leading-6 text-[#18181b] transition-colors group-hover:text-[#f25a05]">{post.title}</span>
+          <span className="mt-2 block text-xs font-bold uppercase leading-5 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</span>
+          {category ? <span className="mt-2 inline-flex text-xs font-bold text-[#f25a05]">{category.name}</span> : null}
+        </span>
+      </Link>
     </article>
   );
 }
@@ -194,3 +196,4 @@ function fieldClass(error: boolean, multiline = false) { return 'w-full rounded-
 function getInitials(name: string) { const parts = name.trim().split(/\s+/).filter(Boolean); return ((parts[0]?.[0] ?? '?') + (parts[1]?.[0] ?? '')).toUpperCase(); }
 function setMeta(selector: string, attr: 'name' | 'property', key: string, content: string) { let el = document.head.querySelector<HTMLMetaElement>(selector); if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); } el.setAttribute('content', content); }
 function setCanonical(href: string) { let el = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]'); if (!el) { el = document.createElement('link'); el.rel = 'canonical'; document.head.appendChild(el); } el.href = href; }
+

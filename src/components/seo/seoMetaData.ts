@@ -1,4 +1,4 @@
-type SeoMeta = {
+﻿type SeoMeta = {
   title: string;
   description: string;
 };
@@ -56,9 +56,9 @@ export const seoMetaByPath: Record<string, SeoMeta> = {
       'View selected Laybrotech projects and website work created for businesses and organisations across different industries.',
   },
   '/explore-more': {
-    title: 'Explore More Services | Laybrotech',
+    title: 'Articles | Laybrotech',
     description:
-      'Explore more Laybrotech technology and digital services for businesses that need reliable online systems and support.',
+      'Read Laybrotech articles on websites, hosting, software, digital marketing, and business technology.',
   },
   '/blog': {
     title: 'Laybrotech Insights | Web Hosting, Websites & Digital Guides',
@@ -75,5 +75,6 @@ export const seoMetaByPath: Record<string, SeoMeta> = {
     description: 'Internal Laybrotech design system reference for brand styles, components, spacing, and typography.',
   },
 };
+
 
 

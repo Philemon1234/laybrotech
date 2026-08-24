@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react';
+﻿import type { ComponentType } from 'react';
 
 import { BlogPage } from '@/pages/BlogPage';
 import { BusinessEmailPage } from '@/pages/BusinessEmailPage';
@@ -30,8 +30,9 @@ export const appRoutes: AppRoute[] = [
   { path: '/digital-marketing', label: 'Digital Marketing', Component: DigitalMarketingPage },
   { path: '/pricing', label: 'Pricing', Component: PricingPage },
   { path: '/projects', label: 'Projects', Component: ProjectsPage },
-  { path: '/explore-more', label: 'Explore More', Component: ExploreMorePage },
+  { path: '/explore-more', label: 'Articles', Component: ExploreMorePage },
   { path: '/blog', label: 'Blog', Component: BlogPage },
   { path: '/contact', label: 'Contact', Component: ContactPage },
   { path: '/design-system', label: 'Design System', Component: DesignSystemPage },
 ];
+
