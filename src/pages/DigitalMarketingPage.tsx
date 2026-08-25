@@ -6,7 +6,6 @@ import {
   DigitalMarketingBenefits,
   DigitalMarketingHero,
   DigitalMarketingProcess,
-  DigitalMarketingProjects,
   DigitalMarketingServices,
   DigitalMarketingTrustBar,
   DigitalMarketingWhyChoose,
@@ -29,7 +28,6 @@ export function DigitalMarketingPage() {
       <DigitalMarketingProcess />
       <SeoWebsiteMarketing />
       <DigitalMarketingBenefits />
-      <DigitalMarketingProjects />
       <Testimonials
         eyebrow="Digital Marketing Testimonials"
         heading="Marketing Support Built Around Real Business Goals."

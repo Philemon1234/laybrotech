@@ -1,7 +1,7 @@
 import { ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import migrationImage from '@/assets/images/services/migration.png';
+import migrationImage from '@/assets/images/services/migration.webp';
 import { ButtonLink } from '@/components/ui/Button';
 
 const benefits = ['Guided migration support', 'Website files and database transfer', 'Domain and DNS assistance', 'Configuration checks after migration'];

@@ -1,7 +1,7 @@
 import { ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import websiteDesignGraphic from '@/assets/Web design.png';
+import websiteDesignGraphic from '@/assets/Web design.webp';
 
 const benefits = ['Mobile Responsive', 'Conversion Focused', 'Search Ready'];
 

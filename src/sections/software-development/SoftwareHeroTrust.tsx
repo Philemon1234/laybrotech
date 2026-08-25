@@ -1,6 +1,6 @@
 import { ArrowRight, Check, Code2, Headphones, Layers3, ServerCog, ShieldCheck } from 'lucide-react';
 
-import softwarePhoto from '@/assets/images/software-development-hero-banner.png';
+import softwarePhoto from '@/assets/images/software-development-hero-banner.webp';
 import { ButtonLink } from '@/components/ui/Button';
 
 const heroPoints = ['Custom-Built Solutions', 'Secure & Scalable Systems', 'Business Process Automation', 'Professional Support'];

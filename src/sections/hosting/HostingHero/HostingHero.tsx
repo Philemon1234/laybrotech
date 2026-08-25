@@ -1,6 +1,6 @@
 import { ArrowRight, Check } from 'lucide-react';
 
-import hostingHeroImage from '@/assets/images/home-hero-hosting.jpg';
+import hostingHeroImage from '@/assets/images/home-hero-hosting.webp';
 import { ButtonLink } from '@/components/ui/Button';
 
 const heroPoints = ['Free SSL Certificate', 'Reliable Uptime', 'Local Technical Support'];

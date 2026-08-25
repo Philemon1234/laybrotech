@@ -1,7 +1,7 @@
 import { type FormEvent, type ReactNode, useMemo, useState } from 'react';
 import { ArrowRight, Check, Clock, Headphones, Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
 
-import heroImage from '@/assets/images/home-hero-business-growth.jpg';
+import heroImage from '@/assets/images/home-hero-business-growth.webp';
 import { Footer } from '@/components/layout/Footer';
 import { ButtonLink } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';

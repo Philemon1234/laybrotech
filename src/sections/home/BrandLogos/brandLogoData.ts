@@ -1,13 +1,13 @@
-﻿import brandLogo1 from '@/assets/images/Brands/1.png';
-import brandLogo2 from '@/assets/images/Brands/2.png';
-import brandLogo3 from '@/assets/images/Brands/3.png';
-import brandLogo4 from '@/assets/images/Brands/4.png';
-import brandLogo5 from '@/assets/images/Brands/5.png';
-import brandLogo6 from '@/assets/images/Brands/6.png';
-import brandLogo7 from '@/assets/images/Brands/7.png';
-import brandLogo8 from '@/assets/images/Brands/8.png';
-import brandLogo9 from '@/assets/images/Brands/9.png';
-import brandLogo10 from '@/assets/images/Brands/10.png';
+﻿import brandLogo1 from '@/assets/images/Brands/1.webp';
+import brandLogo2 from '@/assets/images/Brands/2.webp';
+import brandLogo3 from '@/assets/images/Brands/3.webp';
+import brandLogo4 from '@/assets/images/Brands/4.webp';
+import brandLogo5 from '@/assets/images/Brands/5.webp';
+import brandLogo6 from '@/assets/images/Brands/6.webp';
+import brandLogo7 from '@/assets/images/Brands/7.webp';
+import brandLogo8 from '@/assets/images/Brands/8.webp';
+import brandLogo9 from '@/assets/images/Brands/9.webp';
+import brandLogo10 from '@/assets/images/Brands/10.webp';
 
 export type BrandLogo = {
   id: string;

@@ -1,7 +1,7 @@
 import { BadgeCheck, Star, TrendingUp } from 'lucide-react';
 
-import googlePartnerImage from '@/assets/images/Google-Partner-Laybrotech.png';
-import metaPartnerImage from '@/assets/images/Meta-Business-Partner-Laybrotech.png';
+import googlePartnerImage from '@/assets/images/Google-Partner-Laybrotech.webp';
+import metaPartnerImage from '@/assets/images/Meta-Business-Partner-Laybrotech.webp';
 
 import { trustItems } from './heroData';
 

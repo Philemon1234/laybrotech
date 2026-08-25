@@ -1,4 +1,4 @@
-﻿import { Footer } from '@/components/layout/Footer';
+import { Footer } from '@/components/layout/Footer';
 import { FAQ } from '@/sections/home/FAQ';
 import { FinalCTA } from '@/sections/home/FinalCTA';
 import { Testimonials } from '@/sections/home/Testimonials';
@@ -7,7 +7,6 @@ import {
   SoftwareDevelopmentHero,
   SoftwareIndustries,
   SoftwareProcess,
-  SoftwareProjects,
   SoftwareTechnologies,
   SoftwareTechnologyStack,
   SoftwareTrustBar,
@@ -28,7 +27,6 @@ export function SoftwareDevelopmentPage() {
       <SoftwareTechnologies />
       <SoftwareTechnologyStack />
       <SoftwareBenefits />
-      <SoftwareProjects />
       <Testimonials
         eyebrow="Software Development Testimonials"
         heading="Built Around Real Business Needs."

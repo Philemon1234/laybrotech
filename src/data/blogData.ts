@@ -1,9 +1,9 @@
-﻿import hostingImage from '@/assets/images/services/web-hosting.jpg';
-import webDesignImage from '@/assets/images/services/web-design.jpg';
-import softwareImage from '@/assets/images/services/software-development.jpg';
-import marketingImage from '@/assets/images/services/digital-marketing.jpg';
-import businessGrowthImage from '@/assets/images/home-hero-business-growth.jpg';
-import ecosystemImage from '@/assets/images/home-hero-digital-ecosystem.jpg';
+﻿import hostingImage from '@/assets/images/services/web-hosting.webp';
+import webDesignImage from '@/assets/images/services/web-design.webp';
+import softwareImage from '@/assets/images/services/software-development.webp';
+import marketingImage from '@/assets/images/services/digital-marketing.webp';
+import businessGrowthImage from '@/assets/images/home-hero-business-growth.webp';
+import ecosystemImage from '@/assets/images/home-hero-digital-ecosystem.webp';
 
 export type BlogStatus = 'draft' | 'published';
 export type CommentStatus = 'pending' | 'approved' | 'rejected';

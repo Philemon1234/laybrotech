@@ -1,6 +1,6 @@
 import { Check } from 'lucide-react';
 
-import securityReliabilityImage from '@/assets/images/services/Security & Reliability.png';
+import securityReliabilityImage from '@/assets/images/services/Security & Reliability.webp';
 
 const benefits = ['Free SSL Certificate', 'Website Backups', 'Security Monitoring', 'Reliable Infrastructure', 'Technical Support'];
 

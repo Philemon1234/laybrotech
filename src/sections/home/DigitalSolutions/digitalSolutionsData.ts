@@ -1,7 +1,7 @@
 ﻿import { Code2, Mail, Megaphone, Palette, Server } from 'lucide-react';
 
-import webDesignImage from '@/assets/images/services/web-design.jpg';
-import webHostingImage from '@/assets/images/services/web-hosting.jpg';
+import webDesignImage from '@/assets/images/services/web-design.webp';
+import webHostingImage from '@/assets/images/services/web-hosting.webp';
 
 export type FeaturedService = {
   label: string;

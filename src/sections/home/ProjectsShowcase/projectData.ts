@@ -1,9 +1,9 @@
-import fahariUgandaSafarisImage from '@/assets/images/Portfolio/Fahari-Uganda-Safaris.jpg';
-import invisionAutoParlourImage from '@/assets/images/Portfolio/Invision-Auto-Parlour-Limited.jpg';
-import lmkVenturesHealthcareImage from '@/assets/images/Portfolio/LMK-Ventures-Healthcare.jpg';
-import mealCardDinnerImage from '@/assets/images/Portfolio/Meal-Card-Dinner.jpg';
-import naroHoldingsImage from '@/assets/images/Portfolio/NARO-Holdings-Limited-NHL.jpg';
-import webhosting256Image from '@/assets/images/Portfolio/Webhosting256.jpg';
+import fahariUgandaSafarisImage from '@/assets/images/Portfolio/Fahari-Uganda-Safaris.webp';
+import invisionAutoParlourImage from '@/assets/images/Portfolio/Invision-Auto-Parlour-Limited.webp';
+import lmkVenturesHealthcareImage from '@/assets/images/Portfolio/LMK-Ventures-Healthcare.webp';
+import mealCardDinnerImage from '@/assets/images/Portfolio/Meal-Card-Dinner.webp';
+import naroHoldingsImage from '@/assets/images/Portfolio/NARO-Holdings-Limited-NHL.webp';
+import webhosting256Image from '@/assets/images/Portfolio/Webhosting256.webp';
 
 export type Project = {
   name: string;

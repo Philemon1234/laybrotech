@@ -1,17 +1,17 @@
-﻿import reactLogo from '@/assets/technologies/react.png';
-import typeScriptLogo from '@/assets/technologies/TypeScript.png';
-import javaScriptLogo from '@/assets/technologies/JavaScript.png';
-import nodeLogo from '@/assets/technologies/Nodejs.png';
-import pythonLogo from '@/assets/technologies/Python.png';
-import djangoLogo from '@/assets/technologies/Django.png';
-import postgreSqlLogo from '@/assets/technologies/PostgreSQL.png';
-import supabaseLogo from '@/assets/technologies/Supabase.png';
-import gitLogo from '@/assets/technologies/Git.png';
-import githubLogo from '@/assets/technologies/Github.png';
-import dockerLogo from '@/assets/technologies/Docker.png';
-import vsCodeLogo from '@/assets/technologies/VS Code.png';
-import cloudflareLogo from '@/assets/technologies/Cloudflare.png';
-import restApisLogo from '@/assets/technologies/REST APIs.png';
+﻿import reactLogo from '@/assets/technologies/react.webp';
+import typeScriptLogo from '@/assets/technologies/TypeScript.webp';
+import javaScriptLogo from '@/assets/technologies/JavaScript.webp';
+import nodeLogo from '@/assets/technologies/Nodejs.webp';
+import pythonLogo from '@/assets/technologies/Python.webp';
+import djangoLogo from '@/assets/technologies/Django.webp';
+import postgreSqlLogo from '@/assets/technologies/PostgreSQL.webp';
+import supabaseLogo from '@/assets/technologies/Supabase.webp';
+import gitLogo from '@/assets/technologies/Git.webp';
+import githubLogo from '@/assets/technologies/Github.webp';
+import dockerLogo from '@/assets/technologies/Docker.webp';
+import vsCodeLogo from '@/assets/technologies/VS Code.webp';
+import cloudflareLogo from '@/assets/technologies/Cloudflare.webp';
+import restApisLogo from '@/assets/technologies/REST APIs.webp';
 
 type Technology = {
   name: string;

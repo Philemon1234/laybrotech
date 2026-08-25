@@ -1,11 +1,11 @@
 ﻿import { type KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 
-import domainGraphic from '@/assets/Domain Registration.png';
-import hostingGraphic from '@/assets/Web hosting.png';
-import digitalMarketingGraphic from '@/assets/Digital Marketing.png';
-import softwareGraphic from '@/assets/Software Development.png';
-import websiteGraphic from '@/assets/Web design.png';
+import domainGraphic from '@/assets/Domain Registration.webp';
+import hostingGraphic from '@/assets/Web hosting.webp';
+import digitalMarketingGraphic from '@/assets/Digital Marketing.webp';
+import softwareGraphic from '@/assets/Software Development.webp';
+import websiteGraphic from '@/assets/Web design.webp';
 import { cn } from '@/lib/cn';
 
 type ShowcaseItem = {

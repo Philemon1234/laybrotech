@@ -1,7 +1,7 @@
 ﻿import { Check } from 'lucide-react';
 
-import softwareGraphic from '@/assets/Software Development.png';
-import softwarePhoto from '@/assets/images/services/software-development.jpg';
+import softwareGraphic from '@/assets/Software Development.webp';
+import softwarePhoto from '@/assets/images/services/software-development.webp';
 import { cn } from '@/lib/cn';
 
 const businessPoints = ['Tailored to your needs', 'Business-focused functionality', 'User-friendly interfaces'];

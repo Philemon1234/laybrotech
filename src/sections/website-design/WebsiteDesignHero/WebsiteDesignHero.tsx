@@ -1,6 +1,6 @@
 import { ArrowRight, Check } from 'lucide-react';
 
-import heroImage from '@/assets/images/website-design-hero-banner.png';
+import heroImage from '@/assets/images/website-design-hero-banner.webp';
 import { ButtonLink } from '@/components/ui/Button';
 
 const heroPoints = ['Mobile Responsive', 'SEO-Ready Structure', 'Conversion-Focused Design'];

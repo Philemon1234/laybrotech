@@ -1,6 +1,6 @@
-import businessGrowthImage from '@/assets/images/home-hero-business-growth.jpg';
-import digitalEcosystemImage from '@/assets/images/home-hero-digital-ecosystem.jpg';
-import hostingImage from '@/assets/images/home-hero-hosting.jpg';
+import businessGrowthImage from '@/assets/images/home-hero-business-growth.webp';
+import digitalEcosystemImage from '@/assets/images/home-hero-digital-ecosystem.webp';
+import hostingImage from '@/assets/images/home-hero-hosting.webp';
 
 export type HeroSlide = {
   eyebrow: string;

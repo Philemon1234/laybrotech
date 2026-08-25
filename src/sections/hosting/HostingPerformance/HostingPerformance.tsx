@@ -1,6 +1,6 @@
 ﻿import { Check } from 'lucide-react';
 
-import performanceGraphic from '@/assets/Performance.png';
+import performanceGraphic from '@/assets/Performance.webp';
 
 const benefits = ['Fast SSD-powered hosting', 'Reliable uptime', 'Optimised performance', 'Website monitoring', 'Scalable resources'];
 

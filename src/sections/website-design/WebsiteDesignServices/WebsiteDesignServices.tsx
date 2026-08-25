@@ -1,10 +1,10 @@
 ﻿import { type KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 
-import ecommerceGraphic from '@/assets/E-commerce.png';
-import landingPagesGraphic from '@/assets/Landing Pages.png';
-import websiteRedesignGraphic from '@/assets/Website Redesign.png';
-import businessWebsitesGraphic from '@/assets/Business Websites.png';
+import ecommerceGraphic from '@/assets/E-commerce.webp';
+import landingPagesGraphic from '@/assets/Landing Pages.webp';
+import websiteRedesignGraphic from '@/assets/Website Redesign.webp';
+import businessWebsitesGraphic from '@/assets/Business Websites.webp';
 import { cn } from '@/lib/cn';
 
 type Service = {

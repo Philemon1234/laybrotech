@@ -2,12 +2,12 @@
 import { ArrowRight, BriefcaseBusiness, Building2, Check, GraduationCap, ShoppingBag, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import onlineStoresImage from '@/assets/Online Stores.png';
-import agenciesProfessionalsImage from '@/assets/Agencies & Professionals.png';
-import smallBusinessesImage from '@/assets/Small Businesses.png';
-import webDesignImage from '@/assets/Web design.png';
-import growingOrganisationsImage from '@/assets/Growing Organisations.png';
-import schoolsNgosImage from '@/assets/Schools & NGOs.png';
+import onlineStoresImage from '@/assets/Online Stores.webp';
+import agenciesProfessionalsImage from '@/assets/Agencies & Professionals.webp';
+import smallBusinessesImage from '@/assets/Small Businesses.webp';
+import webDesignImage from '@/assets/Web design.webp';
+import growingOrganisationsImage from '@/assets/Growing Organisations.webp';
+import schoolsNgosImage from '@/assets/Schools & NGOs.webp';
 import { cn } from '@/lib/cn';
 
 const audiences = [
