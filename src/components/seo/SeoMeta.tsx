@@ -1,5 +1,7 @@
-﻿import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+
+import { getProjectBySlug } from '@/sections/home/ProjectsShowcase/projectData';
 
 import { seoMetaByPath, defaultSeoMeta } from './seoMetaData';
 
@@ -19,7 +21,14 @@ export function SeoMeta() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const meta = seoMetaByPath[pathname] ?? defaultSeoMeta;
+    const projectMatch = pathname.match(/^\/projects\/([^/]+)$/);
+    const project = projectMatch ? getProjectBySlug(projectMatch[1]) : undefined;
+    const meta = project
+      ? {
+          title: `${project.name} Website Project | Laybrotech`,
+          description: project.description,
+        }
+      : seoMetaByPath[pathname] ?? defaultSeoMeta;
 
     document.title = meta.title;
     setMetaTag('meta[name="description"]', 'name', 'description', meta.description);

@@ -1,6 +1,7 @@
-﻿import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import { Header } from '@/components/navigation/Header';
+import { FloatingWhatsAppButton } from './FloatingWhatsAppButton';
 
 export function PageLayout() {
   return (
@@ -9,6 +10,7 @@ export function PageLayout() {
       <main>
         <Outlet />
       </main>
+      <FloatingWhatsAppButton />
     </div>
   );
 }

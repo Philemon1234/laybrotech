@@ -4,8 +4,8 @@ import { Link, useParams } from 'react-router-dom';
 
 import { Footer } from '@/components/layout/Footer';
 import { FinalCTA } from '@/sections/home/FinalCTA';
-import { calculateReadTime, formatDate, getApprovedComments, getPublicPostBySlug, getRelatedPosts, submitPendingComment } from '@/lib/supabaseBlog';
-import type { PublicBlogComment, PublicBlogPost } from '@/types/supabaseBlog';
+import { calculateReadTime, formatDate, getApprovedComments, getPublicCategories, getPublicPostBySlug, getRelatedPosts, submitPendingComment } from '@/lib/supabaseBlog';
+import type { PublicBlogCategory, PublicBlogComment, PublicBlogPost } from '@/types/supabaseBlog';
 
 type CommentErrors = Partial<Record<'name' | 'email' | 'comment', string>>;
 
@@ -14,6 +14,7 @@ export function BlogArticlePage() {
   const [post, setPost] = useState<PublicBlogPost | null>(null);
   const [related, setRelated] = useState<PublicBlogPost[]>([]);
   const [comments, setComments] = useState<PublicBlogComment[]>([]);
+  const [categories, setCategories] = useState<PublicBlogCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [values, setValues] = useState({ name: '', email: '', comment: '' });
   const [errors, setErrors] = useState<CommentErrors>({});
@@ -27,9 +28,10 @@ export function BlogArticlePage() {
       const loaded = await getPublicPostBySlug(slug);
       setPost(loaded);
       if (loaded) {
-        const [commentData, relatedData] = await Promise.all([getApprovedComments(loaded.id), getRelatedPosts(loaded, 5)]);
+        const [commentData, relatedData, categoryData] = await Promise.all([getApprovedComments(loaded.id), getRelatedPosts(loaded, 5), getPublicCategories()]);
         setComments(commentData);
         setRelated(relatedData);
+        setCategories(categoryData);
         const title = loaded.seo_title || loaded.title;
         const description = loaded.meta_description || loaded.excerpt || '';
         document.title = title + ' | Laybrotech';
@@ -94,7 +96,6 @@ export function BlogArticlePage() {
       <article className="bg-white px-5 py-12 sm:px-6 sm:py-16 lg:py-20">
         <div className="mx-auto grid w-full max-w-[1360px] gap-12 lg:grid-cols-[minmax(0,0.64fr)_minmax(22rem,0.36fr)] lg:items-start xl:gap-16">
           <div className="min-w-0">
-            <Link className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-[#5f5a56] transition-colors hover:text-[#f25a05]" to="/blog"><ArrowLeft className="size-4" />Back to Blog</Link>
             <FeaturedImage post={currentPost} />
             <header className="mt-8 max-w-[820px]">
               {category ? <CategoryChip category={category} /> : null}
@@ -104,7 +105,7 @@ export function BlogArticlePage() {
             </header>
             <div className="admin-article-body mt-12 max-w-[820px] text-[1.08rem] leading-8 text-[#332f2b] sm:text-[1.13rem] sm:leading-9" dangerouslySetInnerHTML={{ __html: currentPost.content ?? '' }} />
           </div>
-          {related.length ? <TrendingSidebar posts={related} /> : null}
+          {related.length || categories.length ? <TrendingSidebar posts={related} categories={categories} /> : null}
         </div>
       </article>
       {currentPost.allow_comments ? <CommentsSection comments={comments} errors={errors} message={message} submitError={submitError} submitting={submitting} values={values} onChange={updateValue} onSubmit={submitComment} /> : null}
@@ -138,7 +139,7 @@ function CategoryChip({ category }: { category: NonNullable<PublicBlogPost['blog
   return <Link className="inline-flex rounded-full bg-[#fff0e8] px-3 py-1.5 text-xs font-bold uppercase tracking-normal text-[#d94f04] transition-colors hover:bg-[#f25a05] hover:text-white" to={`/blog/category/${category.slug}`}>{category.name}</Link>;
 }
 
-function TrendingSidebar({ posts }: { posts: PublicBlogPost[] }) {
+function TrendingSidebar({ posts, categories }: { posts: PublicBlogPost[]; categories: PublicBlogCategory[] }) {
   return (
     <aside className="lg:sticky lg:top-24" aria-labelledby="trending-articles-heading">
       <div className="overflow-hidden rounded-[0.75rem] bg-[#18181b]">
@@ -146,13 +147,25 @@ function TrendingSidebar({ posts }: { posts: PublicBlogPost[] }) {
           <h2 id="trending-articles-heading" className="max-w-[13rem] text-2xl font-semibold leading-tight text-white">Trending on Laybrotech</h2>
         </div>
       </div>
-      <div className="mt-5 divide-y divide-[#e8e8e8]">
+      {posts.length ? <div className="mt-5 divide-y divide-[#e8e8e8]">
         {posts.map((post) => <TrendingItem key={post.id} post={post} />)}
-      </div>
+      </div> : null}
+      {categories.length ? <CategoryShortcuts categories={categories} /> : null}
     </aside>
   );
 }
 
+function CategoryShortcuts({ categories }: { categories: PublicBlogCategory[] }) {
+  return (
+    <section className="mt-8 border-t border-[#e8e8e8] pt-6" aria-labelledby="article-categories-heading">
+      <h2 id="article-categories-heading" className="text-lg font-semibold text-[#18181b]">Categories</h2>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        {categories.map((category) => <Link key={category.id} className="rounded-full bg-[#fff0e8] px-3 py-1.5 text-xs font-bold uppercase tracking-normal text-[#d94f04] transition-colors hover:bg-[#f25a05] hover:text-white" to={`/blog/category/${category.slug}`}>{category.name}</Link>)}
+      </div>
+    </section>
+  );
+}
 function TrendingItem({ post }: { post: PublicBlogPost }) {
   const category = post.blog_categories;
   return (
@@ -196,4 +209,7 @@ function fieldClass(error: boolean, multiline = false) { return 'w-full rounded-
 function getInitials(name: string) { const parts = name.trim().split(/\s+/).filter(Boolean); return ((parts[0]?.[0] ?? '?') + (parts[1]?.[0] ?? '')).toUpperCase(); }
 function setMeta(selector: string, attr: 'name' | 'property', key: string, content: string) { let el = document.head.querySelector<HTMLMetaElement>(selector); if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); } el.setAttribute('content', content); }
 function setCanonical(href: string) { let el = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]'); if (!el) { el = document.createElement('link'); el.rel = 'canonical'; document.head.appendChild(el); } el.href = href; }
+
+
+
 

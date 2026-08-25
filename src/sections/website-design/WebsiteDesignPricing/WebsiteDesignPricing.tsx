@@ -127,10 +127,10 @@ function WebsiteDesignPricingCard({ item }: { item: WebsiteDesignPackage }) {
         </span>
 
         <h3 className={cn('mt-5 text-[1.7rem] font-semibold leading-tight', isFeatured ? 'text-[#fffaf5]' : 'text-[#18181b]')}>{item.name}</h3>
-        <p className={cn('mt-2 text-[2rem] font-semibold leading-tight', isFeatured ? 'text-white' : 'text-[#18181b]')}>{item.price}</p>
         <p className={cn('mt-4 min-h-[5.7rem] text-sm leading-6', isFeatured ? 'text-[#e8dfd6]' : 'text-[#5f5a56]')}>{item.description}</p>
+        <p className={cn('mt-1 text-[2rem] font-semibold leading-tight', isFeatured ? 'text-white' : 'text-[#18181b]')}>{item.price}</p>
 
-        <div className="mt-auto pt-6">
+        <div className="mt-6">
           <ButtonLink
             className={cn(
               'w-full',

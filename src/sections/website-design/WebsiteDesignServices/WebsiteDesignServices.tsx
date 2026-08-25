@@ -1,10 +1,10 @@
-import { type KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
+﻿import { type KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 
-import digitalMarketingGraphic from '@/assets/Digital Marketing.png';
-import domainRegistrationGraphic from '@/assets/Domain Registration.png';
-import softwareDevelopmentGraphic from '@/assets/Software Development.png';
-import websiteDesignGraphic from '@/assets/Web design.png';
+import ecommerceGraphic from '@/assets/E-commerce.png';
+import landingPagesGraphic from '@/assets/Landing Pages.png';
+import websiteRedesignGraphic from '@/assets/Website Redesign.png';
+import businessWebsitesGraphic from '@/assets/Business Websites.png';
 import { cn } from '@/lib/cn';
 
 type Service = {
@@ -27,7 +27,7 @@ const services: Service[] = [
     description:
       'Ideal for businesses that need a clear, professional online presence that explains their services and makes it easy for customers to get in touch.',
     features: ['Home, About, Services & Contact pages', 'Mobile-friendly design', 'Clear calls to action'],
-    image: websiteDesignGraphic,
+    image: businessWebsitesGraphic,
     imageAlt: 'Website design service preview showing responsive website screens.',
   },
   {
@@ -38,7 +38,7 @@ const services: Service[] = [
     description:
       'Professional e-commerce websites designed to help businesses display products, receive orders, and sell online.',
     features: ['Product pages', 'Payment integration', 'Order & inventory management'],
-    image: digitalMarketingGraphic,
+    image: ecommerceGraphic,
     imageAlt: 'Temporary online store service preview graphic.',
   },
   {
@@ -49,7 +49,7 @@ const services: Service[] = [
     description:
       'We refresh outdated or underperforming websites with a cleaner design, improved usability, and stronger performance.',
     features: ['Modern design', 'Faster speed', 'Improved conversion'],
-    image: softwareDevelopmentGraphic,
+    image: websiteRedesignGraphic,
     imageAlt: 'Temporary website redesign service preview graphic.',
   },
   {
@@ -60,7 +60,7 @@ const services: Service[] = [
     description:
       'Dedicated landing pages designed around one clear message and one important customer action.',
     features: ['Focused messaging', 'High-conversion structure', 'Optimised for Google Ads & social ads'],
-    image: domainRegistrationGraphic,
+    image: landingPagesGraphic,
     imageAlt: 'Temporary landing page service preview graphic.',
   },
 ];
@@ -202,3 +202,11 @@ export function WebsiteDesignServices() {
     </section>
   );
 }
+
+
+
+
+
+
+
+

@@ -331,3 +331,46 @@
   }
 }
 
+
+@layer components {
+  .floating-whatsapp::before,
+  .floating-whatsapp__ring {
+    content: '';
+    position: absolute;
+    inset: -0.42rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(37 211 102 / 0.38);
+    pointer-events: none;
+  }
+
+  .floating-whatsapp::before {
+    animation: whatsapp-pulse 2.4s ease-out infinite;
+  }
+
+  .floating-whatsapp__ring {
+    inset: -0.72rem;
+    border-color: rgb(37 211 102 / 0.22);
+    animation: whatsapp-pulse 2.4s ease-out infinite;
+    animation-delay: 0.75s;
+  }
+
+  @keyframes whatsapp-pulse {
+    0% {
+      opacity: 0.85;
+      transform: scale(0.88);
+    }
+
+    70%,
+    100% {
+      opacity: 0;
+      transform: scale(1.22);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floating-whatsapp::before,
+    .floating-whatsapp__ring {
+      animation: none;
+    }
+  }
+}

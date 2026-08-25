@@ -1,10 +1,11 @@
-﻿import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { PageLayout } from '@/components/layout/PageLayout';
 import { ScrollToTop } from '@/components/routing';
 import { SeoMeta } from '@/components/seo';
 import { appRoutes } from '@/lib/routes';
 import { BlogArticlePage } from '@/pages/BlogArticlePage';
+import { ProjectDetailPage } from '@/pages/ProjectDetailPage';
 import { BlogCategoryPage } from '@/pages/BlogCategoryPage';
 import { AdminBlogCategoriesPage, AdminBlogCommentsPage, AdminBlogEditorPage, AdminBlogPage, AdminHomePage } from '@/pages/BlogAdminPages';
 
@@ -18,6 +19,7 @@ export function App() {
           {appRoutes.map((route) => (
             <Route key={route.path} path={route.path} element={<route.Component />} />
           ))}
+          <Route path="/projects/:slug" element={<ProjectDetailPage />} />
           <Route path="/blog/category/:slug" element={<BlogCategoryPage />} />
           <Route path="/blog/:slug" element={<BlogArticlePage />} />
           <Route path="/admin" element={<AdminHomePage />} />

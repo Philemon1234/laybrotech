@@ -1,5 +1,5 @@
 ﻿import { isSupabaseConfigured, supabase } from '@/lib/supabase';
-import type { PublicBlogComment, PublicBlogPost, PublicBlogTag } from '@/types/supabaseBlog';
+import type { PublicBlogCategory, PublicBlogComment, PublicBlogPost, PublicBlogTag } from '@/types/supabaseBlog';
 
 const publicPostFilter = 'or(status.eq.published,and(status.eq.scheduled,scheduled_at.lte.now()))';
 const fields = 'id,title,slug,excerpt,content,featured_image_url,featured_image_alt,category_id,author_name,status,seo_title,meta_description,canonical_url,allow_comments,published_at,scheduled_at,updated_at,blog_categories(id,name,slug,description,created_at,updated_at)';
@@ -29,6 +29,15 @@ export async function getPublicPosts() {
 export async function getPublicPostsByCategory(categorySlug: string) {
   const posts = await getPublicPosts();
   return posts.filter((post) => post.blog_categories?.slug === categorySlug);
+}
+
+export async function getPublicCategories() {
+  const posts = await getPublicPosts();
+  const categoryMap = new Map<string, PublicBlogCategory>();
+  posts.forEach((post) => {
+    if (post.blog_categories) categoryMap.set(post.blog_categories.id, post.blog_categories);
+  });
+  return Array.from(categoryMap.values()).sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function getPublicPostBySlug(slug: string) {
@@ -74,4 +83,5 @@ export async function getRelatedPosts(current: PublicBlogPost, limit = 4) {
     })
     .slice(0, limit);
 }
+
 

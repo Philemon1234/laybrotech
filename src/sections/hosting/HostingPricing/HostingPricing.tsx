@@ -53,8 +53,9 @@ function PlanCard({ plan }: { plan: HostingPlan }) {
 
         <h3 className={cn('mt-5 text-[1.7rem] font-semibold leading-tight', isFeatured ? 'text-[#fffaf5]' : 'text-[#18181b]')}>{plan.name}</h3>
         <p className={cn('mt-3 min-h-[4.8rem] text-sm leading-6', isFeatured ? 'text-[#e8dfd6]' : 'text-[#5f5a56]')}>{plan.audience}</p>
+        <p className={cn('mt-1 text-[1.8rem] font-semibold leading-tight', isFeatured ? 'text-white' : 'text-[#18181b]')}>{plan.pricing}</p>
 
-        <div className="mt-auto pt-6">
+        <div className="mt-6">
           <ButtonLink
             className={cn(
               'w-full',

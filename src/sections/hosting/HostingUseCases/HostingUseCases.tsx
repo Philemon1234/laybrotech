@@ -1,12 +1,13 @@
-import { type KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
+﻿import { type KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowRight, BriefcaseBusiness, Building2, Check, GraduationCap, ShoppingBag, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import digitalMarketingImage from '@/assets/Digital Marketing.png';
-import softwareDevelopmentImage from '@/assets/Software Development.png';
+import onlineStoresImage from '@/assets/Online Stores.png';
+import agenciesProfessionalsImage from '@/assets/Agencies & Professionals.png';
+import smallBusinessesImage from '@/assets/Small Businesses.png';
 import webDesignImage from '@/assets/Web design.png';
-import webHostingImage from '@/assets/Web hosting.png';
-import securityReliabilityImage from '@/assets/images/services/Security & Reliability.png';
+import growingOrganisationsImage from '@/assets/Growing Organisations.png';
+import schoolsNgosImage from '@/assets/Schools & NGOs.png';
 import { cn } from '@/lib/cn';
 
 const audiences = [
@@ -21,7 +22,7 @@ const audiences = [
     cta: 'Explore Hosting Plans',
     href: '/contact',
     Icon: Building2,
-    image: webDesignImage,
+    image: smallBusinessesImage,
   },
   {
     id: 'online-stores',
@@ -34,7 +35,7 @@ const audiences = [
     cta: 'View Business Hosting',
     href: '/contact',
     Icon: ShoppingBag,
-    image: digitalMarketingImage,
+    image: onlineStoresImage,
   },
   {
     id: 'schools-ngos',
@@ -47,7 +48,7 @@ const audiences = [
     cta: 'Explore Hosting Plans',
     href: '/contact',
     Icon: GraduationCap,
-    image: securityReliabilityImage,
+    image: schoolsNgosImage,
   },
   {
     id: 'agencies-professionals',
@@ -60,7 +61,7 @@ const audiences = [
     cta: 'Explore Business Hosting',
     href: '/contact',
     Icon: BriefcaseBusiness,
-    image: softwareDevelopmentImage,
+    image: agenciesProfessionalsImage,
   },
   {
     id: 'growing-organisations',
@@ -73,7 +74,7 @@ const audiences = [
     cta: 'Talk to Sales',
     href: '/contact',
     Icon: TrendingUp,
-    image: webHostingImage,
+    image: growingOrganisationsImage,
   },
 ];
 
@@ -217,6 +218,17 @@ export function HostingUseCases() {
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

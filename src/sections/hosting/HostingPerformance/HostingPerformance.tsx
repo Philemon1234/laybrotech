@@ -1,6 +1,6 @@
-import { Check } from 'lucide-react';
+﻿import { Check } from 'lucide-react';
 
-import webHostingGraphic from '@/assets/Web hosting.png';
+import performanceGraphic from '@/assets/Performance.png';
 
 const benefits = ['Fast SSD-powered hosting', 'Reliable uptime', 'Optimised performance', 'Website monitoring', 'Scalable resources'];
 
@@ -27,9 +27,10 @@ export function HostingPerformance() {
         </div>
 
         <div className="overflow-hidden rounded-[1.75rem] bg-white p-5 shadow-[0_22px_55px_rgb(23_23_23/0.10)] sm:p-7 lg:p-8" aria-hidden="true">
-          <img className="aspect-[4/3] h-full w-full rounded-[1.25rem] object-cover object-center" src={webHostingGraphic} alt="" loading="lazy" decoding="async" />
+          <img className="aspect-[4/3] h-full w-full rounded-[1.25rem] object-cover object-center" src={performanceGraphic} alt="" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>
   );
 }
+
