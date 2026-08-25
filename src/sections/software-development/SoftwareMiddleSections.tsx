@@ -1,13 +1,13 @@
-﻿import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, BriefcaseBusiness, Building2, Check, Cloud, Database, HeartPulse, Layers3, MonitorSmartphone, Network, Rocket, School, Smartphone, Sparkles, UsersRound, Workflow, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import softwareGraphic from '@/assets/Software Development.webp';
-import businessImage from '@/assets/images/services/business-email.webp';
-import financeImage from '@/assets/images/services/domain-registration.webp';
-import healthcareImage from '@/assets/images/services/Security & Reliability.webp';
-import ngoImage from '@/assets/images/services/web-design.webp';
-import schoolImage from '@/assets/images/services/software-development.webp';
+import modernTechnologyImage from '@/assets/Modern Technology.webp';
+import businessImage from '@/assets/BUSINESSES & COMPANIES.webp';
+import financeImage from '@/assets/FINANCIAL & SERVICE PROVIDERS.webp';
+import healthcareImage from '@/assets/HEALTHCARE FACILITIES.webp';
+import ngoImage from '@/assets/NGOs & ORGANISATIONS.webp';
+import schoolImage from '@/assets/SCHOOLS & EDUCATIONAL INSTITUTIONS.webp';
 import { cn } from '@/lib/cn';
 import { PortfolioMarquee } from '@/sections/home/ProjectsShowcase/PortfolioMarquee';
 import { portfolioRowOneProjects, portfolioRowTwoProjects } from '@/sections/home/ProjectsShowcase/projectData';
@@ -290,7 +290,7 @@ export function SoftwareTechnologies() {
     <section className="bg-[#141414] px-5 pb-12 pt-20 sm:px-6 sm:pb-14 sm:pt-24 lg:pb-16 lg:pt-32" aria-labelledby="software-technologies-heading">
       <div className="mx-auto grid w-full max-w-container items-center gap-12 lg:grid-cols-[0.55fr_0.45fr] lg:gap-16 xl:gap-20">
         <div className="overflow-hidden rounded-[1.75rem] bg-white p-5 shadow-[0_24px_60px_rgb(0_0_0/0.28)] sm:p-7 lg:p-8" aria-hidden="true">
-          <img className="aspect-[4/3] h-full w-full rounded-[1.25rem] object-contain object-center" src={softwareGraphic} alt="" loading="lazy" decoding="async" />
+          <img className="aspect-[4/3] h-full w-full rounded-[1.25rem] object-contain object-center" src={modernTechnologyImage} alt="" loading="lazy" decoding="async" />
         </div>
         <div>
           <p className="type-eyebrow">Modern Technology</p>

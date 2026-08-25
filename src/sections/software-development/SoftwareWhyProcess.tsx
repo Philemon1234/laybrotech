@@ -1,7 +1,7 @@
-﻿import { Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 
-import softwareGraphic from '@/assets/Software Development.webp';
-import softwarePhoto from '@/assets/images/services/software-development.webp';
+import builtForBusinessImage from '@/assets/Built for Your Business.webp';
+import builtToLastImage from '@/assets/Built to Last.webp';
 import { cn } from '@/lib/cn';
 
 const businessPoints = ['Tailored to your needs', 'Business-focused functionality', 'User-friendly interfaces'];
@@ -27,12 +27,12 @@ export function SoftwareWhyChoose() {
         <div className="mx-auto grid w-full max-w-container items-center gap-12 lg:grid-cols-[0.42fr_0.58fr] lg:gap-16 xl:gap-20">
           <div>
             <p className="type-eyebrow">Built for Your Business</p>
-            <h2 id="software-fit-heading" className="mt-4 text-[2.15rem] font-semibold leading-tight text-[#18181b] sm:text-[2.65rem] lg:text-[3.15rem]">Software That Fits Your Workflow — Not the Other Way Around.</h2>
+            <h2 id="software-fit-heading" className="mt-4 text-[2.15rem] font-semibold leading-tight text-[#18181b] sm:text-[2.65rem] lg:text-[3.15rem]">Software That Fits Your Workflow � Not the Other Way Around.</h2>
             <p className="mt-5 max-w-[36rem] text-base leading-7 text-[#5f5a56] sm:text-lg sm:leading-8">Every organisation works differently. We design systems around your actual processes, users, and operational requirements.</p>
             <CheckList items={businessPoints} />
           </div>
           <div className="overflow-hidden rounded-[1.75rem] bg-white p-5 shadow-[0_22px_55px_rgb(23_23_23/0.10)] sm:p-7 lg:p-8" aria-hidden="true">
-            <img className="aspect-[4/3] h-full w-full rounded-[1.25rem] object-cover object-center" src={softwarePhoto} alt="" loading="lazy" decoding="async" />
+            <img className="aspect-[4/3] h-full w-full rounded-[1.25rem] object-cover object-center" src={builtForBusinessImage} alt="" loading="lazy" decoding="async" />
           </div>
         </div>
       </section>
@@ -40,7 +40,7 @@ export function SoftwareWhyChoose() {
       <section className="bg-white px-5 py-20 sm:px-6 sm:py-24 lg:py-32" aria-labelledby="software-scale-heading">
         <div className="mx-auto grid w-full max-w-container items-center gap-12 lg:grid-cols-[0.58fr_0.42fr] lg:gap-16 xl:gap-20">
           <div className="order-2 overflow-hidden rounded-[1.75rem] bg-[#fff4ed] p-5 shadow-[0_22px_55px_rgb(23_23_23/0.08)] sm:p-7 lg:order-1 lg:p-8" aria-hidden="true">
-            <img className="aspect-[4/3] h-full w-full rounded-[1.25rem] object-contain object-center" src={softwareGraphic} alt="" loading="lazy" decoding="async" />
+            <img className="aspect-[4/3] h-full w-full rounded-[1.25rem] object-contain object-center" src={builtToLastImage} alt="" loading="lazy" decoding="async" />
           </div>
           <div className="order-1 lg:order-2">
             <p className="type-eyebrow">Built to Last</p>

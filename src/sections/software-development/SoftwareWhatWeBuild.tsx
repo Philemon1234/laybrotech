@@ -1,11 +1,11 @@
-﻿import { type KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
+import { type KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 
-import domainGraphic from '@/assets/Domain Registration.webp';
-import hostingGraphic from '@/assets/Web hosting.webp';
-import digitalMarketingGraphic from '@/assets/Digital Marketing.webp';
-import softwareGraphic from '@/assets/Software Development.webp';
-import websiteGraphic from '@/assets/Web design.webp';
+import businessSystemsGraphic from '@/assets/Business Systems.webp';
+import customSoftwareGraphic from '@/assets/Custom Software.webp';
+import mobileAppsGraphic from '@/assets/Mobile Apps.webp';
+import schoolSystemsGraphic from '@/assets/School Systems.webp';
+import webApplicationsGraphic from '@/assets/Web Applications.webp';
 import { cn } from '@/lib/cn';
 
 type ShowcaseItem = {
@@ -27,8 +27,8 @@ const buildItems: ShowcaseItem[] = [
     heading: 'Run More of Your Business From One System.',
     description: 'Custom systems designed to help organisations manage operations, customers, finances, inventory, staff, and internal workflows more efficiently.',
     features: ['ERP & operational systems', 'CRM platforms', 'Inventory / HR / payroll tools'],
-    image: softwareGraphic,
-    imageAlt: 'Software development service preview graphic.',
+    image: businessSystemsGraphic,
+    imageAlt: 'Business systems software preview graphic.',
   },
   {
     id: 'school-systems',
@@ -37,8 +37,8 @@ const buildItems: ShowcaseItem[] = [
     heading: 'Simplify Academic and Administrative Workflows.',
     description: 'Digital systems that help schools manage students, fees, academics, communication, attendance, and administration.',
     features: ['Student portals', 'Results & academic management', 'Admissions / attendance systems'],
-    image: websiteGraphic,
-    imageAlt: 'Temporary school management system preview graphic.',
+    image: schoolSystemsGraphic,
+    imageAlt: 'School management system preview graphic.',
   },
   {
     id: 'web-applications',
@@ -47,8 +47,8 @@ const buildItems: ShowcaseItem[] = [
     heading: 'Secure Applications Accessible From Anywhere.',
     description: 'Responsive web-based platforms built for teams, customers, members, and internal operations across modern devices.',
     features: ['Client portals', 'Booking systems', 'Business dashboards'],
-    image: hostingGraphic,
-    imageAlt: 'Temporary web application preview graphic.',
+    image: webApplicationsGraphic,
+    imageAlt: 'Web application software preview graphic.',
   },
   {
     id: 'mobile-apps',
@@ -57,8 +57,8 @@ const buildItems: ShowcaseItem[] = [
     heading: 'Mobile Experiences Built Around Real User Needs.',
     description: 'Modern mobile applications designed to improve accessibility, customer engagement, and service delivery.',
     features: ['Android applications', 'Business apps', 'Customer / service platforms'],
-    image: digitalMarketingGraphic,
-    imageAlt: 'Temporary mobile application preview graphic.',
+    image: mobileAppsGraphic,
+    imageAlt: 'Mobile app development preview graphic.',
   },
   {
     id: 'custom-software',
@@ -67,8 +67,8 @@ const buildItems: ShowcaseItem[] = [
     heading: 'Software Designed Around Your Unique Workflow.',
     description: 'When off-the-shelf tools do not fit, we design and develop software around your requirements, processes, and operational needs.',
     features: ['Tailored workflows', 'Custom integrations', 'Purpose-built platforms'],
-    image: domainGraphic,
-    imageAlt: 'Temporary custom software preview graphic.',
+    image: customSoftwareGraphic,
+    imageAlt: 'Custom software solution preview graphic.',
   },
 ];
 
