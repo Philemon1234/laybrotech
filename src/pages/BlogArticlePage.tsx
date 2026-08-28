@@ -1,8 +1,9 @@
 import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
-import { AlertCircle, ArrowLeft, CheckCircle2, ImageIcon } from 'lucide-react';
+import { AlertCircle, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
 import { Footer } from '@/components/layout/Footer';
+import blogHeroImage from '@/assets/images/blog-hero.webp';
 import { FinalCTA } from '@/sections/home/FinalCTA';
 import { calculateReadTime, formatDate, getApprovedComments, getPublicCategories, getPublicPostBySlug, getRelatedPosts, submitPendingComment } from '@/lib/supabaseBlog';
 import type { PublicBlogCategory, PublicBlogComment, PublicBlogPost } from '@/types/supabaseBlog';
@@ -93,17 +94,9 @@ export function BlogArticlePage() {
 
   return (
     <>
-      <article className="bg-white px-5 py-12 sm:px-6 sm:py-16 lg:py-20">
-        <div className="mx-auto w-full max-w-[1480px]">
-          <FeaturedImage post={currentPost} />
-          <header className="mx-auto mt-10 max-w-[900px] text-center sm:mt-12">
-            {category ? <CategoryChip category={category} /> : null}
-            <h1 className="mt-5 text-[clamp(2.35rem,5vw,3.65rem)] font-semibold leading-[1.08] tracking-normal text-[#18181b]">{currentPost.title}</h1>
-            {currentPost.excerpt ? <p className="mx-auto mt-5 max-w-[820px] text-[1.08rem] leading-8 text-[#5f5a56] sm:text-[1.15rem]">{currentPost.excerpt}</p> : null}
-            <ArticleMeta post={currentPost} />
-          </header>
-          <div className="admin-article-body mx-auto mt-12 max-w-[860px] text-[1.08rem] leading-8 text-[#332f2b] sm:text-[1.13rem] sm:leading-9" dangerouslySetInnerHTML={{ __html: currentPost.content ?? '' }} />
-        </div>
+      <BlogDetailHero post={currentPost} category={category} />
+      <article className="bg-white px-5 py-14 sm:px-6 sm:py-16 lg:py-20">
+        <div className="admin-article-body mx-auto max-w-[860px] text-[1.08rem] leading-8 text-[#332f2b] sm:text-[1.13rem] sm:leading-9" dangerouslySetInnerHTML={{ __html: currentPost.content ?? '' }} />
       </article>
       {(related.length || categories.length) ? <ArticleDiscovery posts={related} categories={categories} /> : null}
       {currentPost.allow_comments ? <CommentsSection comments={comments} errors={errors} message={message} submitError={submitError} submitting={submitting} values={values} onChange={updateValue} onSubmit={submitComment} /> : null}
@@ -112,29 +105,43 @@ export function BlogArticlePage() {
   );
 }
 
-function FeaturedImage({ post }: { post: PublicBlogPost }) {
-  if (!post.featured_image_url) return <div className="grid aspect-[16/8.5] w-full place-items-center rounded-[0.85rem] bg-[#f7f7f6] text-[#766e67]"><ImageIcon className="size-10" aria-hidden="true" /><span className="sr-only">No featured image available</span></div>;
-  return <img className="aspect-[16/8.5] w-full rounded-[0.85rem] object-cover object-center" src={post.featured_image_url} alt={post.featured_image_alt || post.title} loading="eager" decoding="async" />;
+function BlogDetailHero({ post, category }: { post: PublicBlogPost; category: PublicBlogPost['blog_categories'] }) {
+  const heroImage = post.featured_image_url || blogHeroImage;
+
+  return (
+    <section className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden bg-[#111111] px-5 py-24 text-center sm:px-6 lg:px-8" aria-label="Article header">
+      <div className="absolute inset-0 -z-20 bg-cover bg-center" style={{ backgroundImage: `url(${heroImage})` }} aria-hidden="true" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.76),rgba(0,0,0,0.84)),radial-gradient(circle_at_center,rgba(242,90,5,0.16),rgba(0,0,0,0)_42%)]" aria-hidden="true" />
+      <div className="mx-auto flex w-full max-w-[920px] flex-col items-center">
+        {category ? <CategoryChip category={category} variant="hero" /> : null}
+        <h1 className="mt-6 text-[clamp(2.5rem,6vw,5.15rem)] font-semibold leading-[1.02] tracking-normal text-white">{post.title}</h1>
+        {post.excerpt ? <p className="mx-auto mt-6 max-w-[760px] text-[1.05rem] leading-8 text-white sm:text-[1.18rem]">{post.excerpt}</p> : null}
+        <ArticleMeta post={post} variant="hero" />
+      </div>
+    </section>
+  );
 }
 
-function ArticleMeta({ post }: { post: PublicBlogPost }) {
+function ArticleMeta({ post, variant = 'default' }: { post: PublicBlogPost; variant?: 'default' | 'hero' }) {
   const author = post.author_name || 'Laybrotech Team';
+  const isHero = variant === 'hero';
   return (
-    <div className="mt-7 flex flex-col gap-4 border-y border-[#e8e8e8] py-5 sm:flex-row sm:items-center sm:justify-between">
+    <div className={isHero ? 'mt-8 flex flex-col items-center gap-4 border-y border-white/30 px-2 py-5 sm:flex-row sm:justify-center sm:gap-6' : 'mt-7 flex flex-col gap-4 border-y border-[#e8e8e8] py-5 sm:flex-row sm:items-center sm:justify-between'}>
       <div className="flex items-center gap-3">
-        <div className="grid size-11 shrink-0 place-items-center rounded-full bg-[#fff0e8] text-sm font-bold uppercase text-[#b84608]" aria-hidden="true">{getInitials(author)}</div>
-        <div>
-          <p className="text-sm font-bold text-[#18181b]">{author}</p>
-          <p className="mt-0.5 text-sm text-[#766e67]">Laybrotech Team</p>
+        <div className={isHero ? 'grid size-11 shrink-0 place-items-center rounded-full bg-white/18 text-sm font-bold uppercase text-white ring-1 ring-white/30' : 'grid size-11 shrink-0 place-items-center rounded-full bg-[#fff0e8] text-sm font-bold uppercase text-[#b84608]'} aria-hidden="true">{getInitials(author)}</div>
+        <div className={isHero ? 'text-left' : ''}>
+          <p className={isHero ? 'text-sm font-bold text-white' : 'text-sm font-bold text-[#18181b]'}>{author}</p>
+          <p className={isHero ? 'mt-0.5 text-sm text-white' : 'mt-0.5 text-sm text-[#766e67]'}>Laybrotech Team</p>
         </div>
       </div>
-      <p className="text-sm font-bold uppercase leading-6 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</p>
+      <p className={isHero ? 'text-sm font-bold uppercase leading-6 text-white' : 'text-sm font-bold uppercase leading-6 text-[#766e67]'}>{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</p>
     </div>
   );
 }
 
-function CategoryChip({ category }: { category: NonNullable<PublicBlogPost['blog_categories']> }) {
-  return <Link className="inline-flex rounded-full bg-[#fff0e8] px-3 py-1.5 text-xs font-bold uppercase tracking-normal text-[#d94f04] transition-colors hover:bg-[#f25a05] hover:text-white" to={`/blog/category/${category.slug}`}>{category.name}</Link>;
+function CategoryChip({ category, variant = 'default' }: { category: NonNullable<PublicBlogPost['blog_categories']>; variant?: 'default' | 'hero' }) {
+  const className = variant === 'hero' ? 'inline-flex rounded-full bg-white/12 px-3 py-1.5 text-xs font-bold uppercase tracking-normal text-[#ff7a2d] ring-1 ring-white/18 backdrop-blur transition-colors hover:bg-[#f25a05] hover:text-white hover:ring-[#f25a05]' : 'inline-flex rounded-full bg-[#fff0e8] px-3 py-1.5 text-xs font-bold uppercase tracking-normal text-[#d94f04] transition-colors hover:bg-[#f25a05] hover:text-white';
+  return <Link className={className} to={`/blog/category/${category.slug}`}>{category.name}</Link>;
 }
 
 function ArticleDiscovery({ posts, categories }: { posts: PublicBlogPost[]; categories: PublicBlogCategory[] }) {
@@ -215,6 +222,8 @@ function fieldClass(error: boolean, multiline = false) { return 'w-full rounded-
 function getInitials(name: string) { const parts = name.trim().split(/\s+/).filter(Boolean); return ((parts[0]?.[0] ?? '?') + (parts[1]?.[0] ?? '')).toUpperCase(); }
 function setMeta(selector: string, attr: 'name' | 'property', key: string, content: string) { let el = document.head.querySelector<HTMLMetaElement>(selector); if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); } el.setAttribute('content', content); }
 function setCanonical(href: string) { let el = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]'); if (!el) { el = document.createElement('link'); el.rel = 'canonical'; document.head.appendChild(el); } el.href = href; }
+
+
 
 
 
