@@ -1,20 +1,20 @@
 {
-  "totalBefore": 1462089,
-  "totalAfter": 95728,
-  "resizedCount": 1,
+  "totalBefore": 1685254,
+  "totalAfter": 100740,
+  "resizedCount": 0,
   "convertedCount": 1,
   "results": [
     {
-      "source": "src/assets/Modern Technology.png",
-      "output": "src/assets/Modern Technology.webp",
-      "width": 1448,
-      "height": 1086,
-      "resized": true,
-      "maxWidth": 1400,
+      "source": "src/assets/images/blog-hero.png",
+      "output": "src/assets/images/blog-hero.webp",
+      "width": 1717,
+      "height": 916,
+      "resized": false,
+      "maxWidth": 1717,
       "quality": 88,
-      "before": 1462089,
-      "after": 95728,
-      "saved": 1366361
+      "before": 1685254,
+      "after": 100740,
+      "saved": 1584514
     }
   ]
 }

@@ -14,12 +14,12 @@ const trustItems = [
 
 export function SoftwareDevelopmentHero() {
   return (
-    <section className="relative isolate min-h-[650px] overflow-hidden bg-[#171717] lg:min-h-[720px]" aria-labelledby="software-development-hero-heading">
+    <section className="relative isolate min-h-[90svh] overflow-hidden bg-[#171717]" aria-labelledby="software-development-hero-heading">
       <img className="absolute inset-0 -z-20 h-full w-full object-cover object-[68%_center]" src={softwarePhoto} alt="Software development team collaborating on a digital product in a modern office." fetchPriority="high" />
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,15,15,0.96)_0%,rgba(15,15,15,0.78)_43%,rgba(15,15,15,0.2)_100%)]" />
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,rgba(15,15,15,0.58)_0%,rgba(15,15,15,0)_54%)]" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,8,8,0.98)_0%,rgba(8,8,8,0.90)_46%,rgba(8,8,8,0.72)_100%)]" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,rgba(8,8,8,0.82)_0%,rgba(8,8,8,0.28)_52%,rgba(8,8,8,0.64)_100%)]" />
 
-      <div className="mx-auto flex min-h-[650px] w-full max-w-container items-center px-6 pb-28 pt-16 sm:px-8 lg:min-h-[720px] lg:px-16">
+      <div className="mx-auto flex min-h-[90svh] w-full max-w-container items-center px-6 py-20 sm:px-8 lg:px-16">
         <div className="max-w-[52rem]">
           <p className="type-eyebrow">Software Solutions</p>
           <h1 id="software-development-hero-heading" className="mt-5 text-[2.45rem] font-semibold leading-[1.08] text-[#fffaf5] sm:text-[3.35rem] lg:text-[4.15rem]">

@@ -1,4 +1,4 @@
-﻿import { type MouseEvent, useEffect, useId, useRef, useState } from 'react';
+import { type MouseEvent, useEffect, useId, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ArrowRight, ChevronDown, Code2, Globe2, Headphones, Megaphone, Menu, Server, X } from 'lucide-react';
 
@@ -52,7 +52,7 @@ export function Header() {
           <NavLink className={navLinkClass} to="/hosting" onClick={(event) => handleSameRouteLink(event, '/hosting')}>Web Hosting</NavLink>
           <Dropdown refEl={dropdownRef} buttonId={servicesButtonId} menuId={servicesMenuId} label="Services" items={serviceItems} isOpen={isServicesOpen} setOpen={setIsServicesOpen} isActive={isServiceRoute} firstRef={firstServiceRef} currentPathname={location.pathname} />
           <NavLink className={navLinkClass} to="/projects" onClick={(event) => handleSameRouteLink(event, '/projects')}>Projects</NavLink>
-          <NavLink className={navLinkClass} to="/blog" onClick={(event) => handleSameRouteLink(event, '/blog')}>Articles</NavLink>
+          <NavLink className={navLinkClass} to="/blog" onClick={(event) => handleSameRouteLink(event, '/blog')}>Blog</NavLink>
         </nav>
         <div className="hidden items-center gap-4 lg:flex"><a className="group flex items-center gap-3 rounded-button px-2 py-2" href={supportPhoneHref}><span className="flex size-10 items-center justify-center rounded-control bg-brand-muted text-brand-orange transition-colors duration-smooth group-hover:bg-brand-orange group-hover:text-brand-white"><Headphones className="size-5" aria-hidden="true" /></span><span className="leading-tight"><span className="block text-xs font-semibold uppercase tracking-normal text-brand-text-secondary">Client Support</span><span className="mt-0.5 block text-sm font-bold text-brand-text-primary">{supportPhone}</span></span></a><ButtonLink href="/contact" rightIcon={<ArrowRight />} size="md">Talk to Sales</ButtonLink></div>
         <button className="inline-flex size-11 items-center justify-center rounded-control border border-[#e5e1dc] bg-[#fff] text-[#18181b] shadow-[0_6px_16px_rgb(23_23_23/0.06)] transition-colors duration-smooth hover:bg-[#f2f2ef] lg:hidden" type="button" aria-label={isMobileOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={isMobileOpen} aria-controls={mobileMenuId} onClick={() => setIsMobileOpen((current) => !current)}>{isMobileOpen ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}</button>
@@ -62,7 +62,7 @@ export function Header() {
           <NavLink className={({ isActive }) => cn('mb-2 rounded-button bg-[#fff] px-4 py-3 font-semibold transition-colors duration-smooth hover:bg-[#f2f2ef]', isActive ? 'text-brand-orange' : 'text-[#18181b]')} to="/hosting" onClick={(event) => handleMobileLink(event, '/hosting')}>Web Hosting</NavLink>
           <MobileGroup label="Services" items={serviceItems} open={isMobileServicesOpen} setOpen={setIsMobileServicesOpen} active={isServiceRoute} close={closeMobileMenu} currentPathname={location.pathname} />
           <NavLink className={({ isActive }) => cn('mt-2 rounded-button bg-[#fff] px-4 py-3 font-semibold transition-colors duration-smooth hover:bg-[#f2f2ef]', isActive ? 'text-brand-orange' : 'text-[#18181b]')} to="/projects" onClick={(event) => handleMobileLink(event, '/projects')}>Projects</NavLink>
-          <NavLink className={({ isActive }) => cn('mt-2 rounded-button bg-[#fff] px-4 py-3 font-semibold transition-colors duration-smooth hover:bg-[#f2f2ef]', isActive ? 'text-brand-orange' : 'text-[#18181b]')} to="/blog" onClick={(event) => handleMobileLink(event, '/blog')}>Articles</NavLink>
+          <NavLink className={({ isActive }) => cn('mt-2 rounded-button bg-[#fff] px-4 py-3 font-semibold transition-colors duration-smooth hover:bg-[#f2f2ef]', isActive ? 'text-brand-orange' : 'text-[#18181b]')} to="/blog" onClick={(event) => handleMobileLink(event, '/blog')}>Blog</NavLink>
           <div className="mt-auto border-t border-[#e5e1dc] pt-5"><a className="flex items-center gap-3 rounded-button bg-[#fbfaf7] px-4 py-3" href={supportPhoneHref}><span className="flex size-10 items-center justify-center rounded-control bg-[#fff] text-[#f25a05]"><Headphones className="size-5" aria-hidden="true" /></span><span><span className="block text-xs font-semibold uppercase text-[#5f5a56]">Client Support</span><span className="mt-0.5 block font-bold text-[#18181b]">{supportPhone}</span></span></a><ButtonLink className="mt-4 w-full" href="/contact" rightIcon={<ArrowRight />} onClick={closeMobileMenu}>Talk to Sales</ButtonLink></div>
         </nav>
       </div>

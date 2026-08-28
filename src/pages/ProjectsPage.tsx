@@ -37,11 +37,11 @@ function ProjectsHero() {
 
   return (
     <section className="relative isolate overflow-hidden bg-[#151515]" aria-labelledby="projects-hero-heading">
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_82%_24%,rgba(242,90,5,0.24),transparent_34%),linear-gradient(135deg,#171717_0%,#1f1f1f_52%,#0f0f0f_100%)]" aria-hidden="true" />
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_82%_24%,rgba(242,90,5,0.16),transparent_34%),linear-gradient(135deg,#101010_0%,#151515_52%,#090909_100%)]" aria-hidden="true" />
       <div className="absolute left-0 top-0 -z-10 h-px w-full bg-gradient-to-r from-transparent via-white/18 to-transparent" aria-hidden="true" />
       <div className="absolute bottom-0 right-0 -z-10 h-[22rem] w-[22rem] rounded-full bg-[#f25a05]/10 blur-3xl" aria-hidden="true" />
 
-      <div className="mx-auto grid min-h-[650px] w-full max-w-container items-center gap-12 px-5 py-20 sm:px-6 lg:min-h-[720px] lg:grid-cols-[0.47fr_0.53fr] lg:py-24">
+      <div className="mx-auto grid min-h-[90svh] w-full max-w-container items-center gap-12 px-5 py-20 sm:px-6 lg:grid-cols-[0.47fr_0.53fr] lg:py-24">
         <div className="max-w-[43rem]">
           <p className="type-eyebrow">Our Work</p>
           <h1 id="projects-hero-heading" className="mt-5 text-[2.45rem] font-semibold leading-[1.08] text-[#fffaf5] sm:text-[3.35rem] lg:text-[4.15rem]">

@@ -30,11 +30,11 @@ export function HeroSlide({ slide, isActive, isFirst }: HeroSlideProps) {
         fetchPriority={isFirst ? 'high' : 'auto'}
         style={{ objectPosition: slide.imagePosition }}
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,15,15,0.94)_0%,rgba(15,15,15,0.76)_42%,rgba(15,15,15,0.22)_100%)] sm:bg-[linear-gradient(90deg,rgba(15,15,15,0.92)_0%,rgba(15,15,15,0.72)_34%,rgba(15,15,15,0.56)_52%,rgba(15,15,15,0.16)_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(15,15,15,0.60)_0%,rgba(15,15,15,0)_44%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,8,8,0.98)_0%,rgba(8,8,8,0.90)_46%,rgba(8,8,8,0.72)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(8,8,8,0.82)_0%,rgba(8,8,8,0.28)_52%,rgba(8,8,8,0.64)_100%)]" />
 
       <div className="relative z-10 flex min-h-full items-center">
-        <div className="mx-auto w-full max-w-container px-6 pb-48 pt-16 sm:px-8 sm:pb-40 md:px-10 md:pb-44 lg:px-16 xl:px-16">
+        <div className="mx-auto w-full max-w-container px-6 py-24 sm:px-8 md:px-10 lg:px-16 xl:px-16">
           <div
             className={cn(
               'max-w-[60rem] transition-[opacity,transform] duration-[720ms] ease-out',

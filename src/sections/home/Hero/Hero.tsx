@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { HeroControls } from './HeroControls';
 import { HeroSlide } from './HeroSlide';
@@ -64,7 +64,7 @@ export function Hero() {
         }
       }}
     >
-      <div className="relative min-h-[760px] overflow-hidden sm:min-h-[720px] md:min-h-[calc(92svh-76px)] lg:min-h-[calc(94svh-80px)] lg:max-h-[900px]">
+      <div className="relative min-h-[90svh] overflow-hidden">
         {heroSlides.map((slide, index) => (
           <HeroSlide key={slide.headline} slide={slide} isActive={activeIndex === index} isFirst={index === 0} />
         ))}

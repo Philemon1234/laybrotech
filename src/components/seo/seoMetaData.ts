@@ -1,4 +1,4 @@
-﻿type SeoMeta = {
+type SeoMeta = {
   title: string;
   description: string;
 };
@@ -61,7 +61,7 @@ export const seoMetaByPath: Record<string, SeoMeta> = {
       'Read Laybrotech articles on websites, hosting, software, digital marketing, and business technology.',
   },
   '/blog': {
-    title: 'Laybrotech Insights | Web Hosting, Websites & Digital Guides',
+    title: 'Blog | Laybrotech',
     description:
       'Explore practical Laybrotech insights on web hosting, websites, software, digital marketing, and business technology.',
   },

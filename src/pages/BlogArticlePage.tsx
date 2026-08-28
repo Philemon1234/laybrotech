@@ -1,4 +1,4 @@
-ï»¿import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
+import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
 import { AlertCircle, ArrowLeft, CheckCircle2, ImageIcon } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -94,20 +94,18 @@ export function BlogArticlePage() {
   return (
     <>
       <article className="bg-white px-5 py-12 sm:px-6 sm:py-16 lg:py-20">
-        <div className="mx-auto grid w-full max-w-[1360px] gap-12 lg:grid-cols-[minmax(0,0.64fr)_minmax(22rem,0.36fr)] lg:items-start xl:gap-16">
-          <div className="min-w-0">
-            <FeaturedImage post={currentPost} />
-            <header className="mt-8 max-w-[820px]">
-              {category ? <CategoryChip category={category} /> : null}
-              <h1 className="mt-4 text-[clamp(2.35rem,5vw,3.35rem)] font-semibold leading-[1.08] tracking-normal text-[#18181b]">{currentPost.title}</h1>
-              {currentPost.excerpt ? <p className="mt-5 text-[1.08rem] leading-8 text-[#5f5a56] sm:text-[1.15rem]">{currentPost.excerpt}</p> : null}
-              <ArticleMeta post={currentPost} />
-            </header>
-            <div className="admin-article-body mt-12 max-w-[820px] text-[1.08rem] leading-8 text-[#332f2b] sm:text-[1.13rem] sm:leading-9" dangerouslySetInnerHTML={{ __html: currentPost.content ?? '' }} />
-          </div>
-          {related.length || categories.length ? <TrendingSidebar posts={related} categories={categories} /> : null}
+        <div className="mx-auto w-full max-w-[1480px]">
+          <FeaturedImage post={currentPost} />
+          <header className="mx-auto mt-10 max-w-[900px] text-center sm:mt-12">
+            {category ? <CategoryChip category={category} /> : null}
+            <h1 className="mt-5 text-[clamp(2.35rem,5vw,3.65rem)] font-semibold leading-[1.08] tracking-normal text-[#18181b]">{currentPost.title}</h1>
+            {currentPost.excerpt ? <p className="mx-auto mt-5 max-w-[820px] text-[1.08rem] leading-8 text-[#5f5a56] sm:text-[1.15rem]">{currentPost.excerpt}</p> : null}
+            <ArticleMeta post={currentPost} />
+          </header>
+          <div className="admin-article-body mx-auto mt-12 max-w-[860px] text-[1.08rem] leading-8 text-[#332f2b] sm:text-[1.13rem] sm:leading-9" dangerouslySetInnerHTML={{ __html: currentPost.content ?? '' }} />
         </div>
       </article>
+      {(related.length || categories.length) ? <ArticleDiscovery posts={related} categories={categories} /> : null}
       {currentPost.allow_comments ? <CommentsSection comments={comments} errors={errors} message={message} submitError={submitError} submitting={submitting} values={values} onChange={updateValue} onSubmit={submitComment} /> : null}
       <FinalCTA heading="Need Help With Your Digital Project?" primaryLabel="Start Your Project" primaryHref="/contact" secondaryLabel="Talk to Sales" secondaryHref="/contact" /><Footer />
     </>
@@ -115,8 +113,8 @@ export function BlogArticlePage() {
 }
 
 function FeaturedImage({ post }: { post: PublicBlogPost }) {
-  if (!post.featured_image_url) return <div className="grid aspect-[16/10] w-full place-items-center rounded-[0.85rem] bg-[#f7f7f6] text-[#766e67]"><ImageIcon className="size-10" aria-hidden="true" /><span className="sr-only">No featured image available</span></div>;
-  return <img className="aspect-[16/10] w-full rounded-[0.85rem] object-cover object-center" src={post.featured_image_url} alt={post.featured_image_alt || post.title} loading="eager" decoding="async" />;
+  if (!post.featured_image_url) return <div className="grid aspect-[16/8.5] w-full place-items-center rounded-[0.85rem] bg-[#f7f7f6] text-[#766e67]"><ImageIcon className="size-10" aria-hidden="true" /><span className="sr-only">No featured image available</span></div>;
+  return <img className="aspect-[16/8.5] w-full rounded-[0.85rem] object-cover object-center" src={post.featured_image_url} alt={post.featured_image_alt || post.title} loading="eager" decoding="async" />;
 }
 
 function ArticleMeta({ post }: { post: PublicBlogPost }) {
@@ -130,7 +128,7 @@ function ArticleMeta({ post }: { post: PublicBlogPost }) {
           <p className="mt-0.5 text-sm text-[#766e67]">Laybrotech Team</p>
         </div>
       </div>
-      <p className="text-sm font-bold uppercase leading-6 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} Â· {calculateReadTime(post.content)} min read</p>
+      <p className="text-sm font-bold uppercase leading-6 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</p>
     </div>
   );
 }
@@ -139,49 +137,57 @@ function CategoryChip({ category }: { category: NonNullable<PublicBlogPost['blog
   return <Link className="inline-flex rounded-full bg-[#fff0e8] px-3 py-1.5 text-xs font-bold uppercase tracking-normal text-[#d94f04] transition-colors hover:bg-[#f25a05] hover:text-white" to={`/blog/category/${category.slug}`}>{category.name}</Link>;
 }
 
-function TrendingSidebar({ posts, categories }: { posts: PublicBlogPost[]; categories: PublicBlogCategory[] }) {
+function ArticleDiscovery({ posts, categories }: { posts: PublicBlogPost[]; categories: PublicBlogCategory[] }) {
   return (
-    <aside className="lg:sticky lg:top-24" aria-labelledby="trending-articles-heading">
-      <div className="overflow-hidden rounded-[0.75rem] bg-[#18181b]">
-        <div className="bg-[linear-gradient(135deg,#f25a05_0%,#c94305_46%,#18181b_46%,#18181b_100%)] px-5 py-6">
-          <h2 id="trending-articles-heading" className="max-w-[13rem] text-2xl font-semibold leading-tight text-white">Trending on Laybrotech</h2>
-        </div>
+    <section className="bg-white px-5 pb-8 sm:px-6 sm:pb-10" aria-label="More blog discovery">
+      <div className="mx-auto w-full max-w-[1480px] border-t border-[#e8e8e8] pt-14 sm:pt-16 lg:pt-20">
+        {posts.length ? <TrendingArticles posts={posts} /> : null}
+        {categories.length ? <CategoryShortcuts categories={categories} /> : null}
       </div>
-      {posts.length ? <div className="mt-5 divide-y divide-[#e8e8e8]">
-        {posts.map((post) => <TrendingItem key={post.id} post={post} />)}
-      </div> : null}
-      {categories.length ? <CategoryShortcuts categories={categories} /> : null}
-    </aside>
+    </section>
+  );
+}
+
+function TrendingArticles({ posts }: { posts: PublicBlogPost[] }) {
+  return (
+    <section aria-labelledby="trending-articles-heading">
+      <div className="max-w-[48rem]">
+        <p className="type-eyebrow">Continue Reading</p>
+        <h2 id="trending-articles-heading" className="mt-3 text-[2rem] font-semibold leading-tight text-[#18181b] sm:text-[2.45rem]">Trending on Laybrotech</h2>
+      </div>
+      <div className="mt-8 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        {posts.slice(0, 3).map((post) => <TrendingItem key={post.id} post={post} />)}
+      </div>
+    </section>
   );
 }
 
 function CategoryShortcuts({ categories }: { categories: PublicBlogCategory[] }) {
   return (
-    <section className="mt-8 border-t border-[#e8e8e8] pt-6" aria-labelledby="article-categories-heading">
-      <h2 id="article-categories-heading" className="text-lg font-semibold text-[#18181b]">Categories</h2>
-
-      <div className="mt-4 flex flex-wrap gap-2">
+    <section className="mt-14 border-t border-[#e8e8e8] pt-10 sm:mt-16 sm:pt-12" aria-labelledby="article-categories-heading">
+      <h2 id="article-categories-heading" className="text-[1.75rem] font-semibold leading-tight text-[#18181b]">Categories</h2>
+      <div className="mt-5 flex flex-wrap gap-2.5">
         {categories.map((category) => <Link key={category.id} className="rounded-full bg-[#fff0e8] px-3 py-1.5 text-xs font-bold uppercase tracking-normal text-[#d94f04] transition-colors hover:bg-[#f25a05] hover:text-white" to={`/blog/category/${category.slug}`}>{category.name}</Link>)}
       </div>
     </section>
   );
 }
+
 function TrendingItem({ post }: { post: PublicBlogPost }) {
   const category = post.blog_categories;
   return (
     <article>
-      <Link className="group grid cursor-pointer gap-4 py-5 first:pt-0 md:grid-cols-[9.5rem_minmax(0,1fr)] lg:grid-cols-[8.5rem_minmax(0,1fr)] xl:grid-cols-[10rem_minmax(0,1fr)]" to={`/blog/${post.slug}`} aria-label={`Read ${post.title}`}>
-        <span className="overflow-hidden rounded-[0.5rem] bg-[#f7f7f6]"><img className="aspect-[4/3] w-full object-cover object-center transition duration-300 group-hover:scale-[1.018]" src={post.featured_image_url ?? ''} alt={post.featured_image_alt || post.title} loading="lazy" decoding="async" /></span>
-        <span className="min-w-0">
-          <span className="line-clamp-3 block text-[1rem] font-bold leading-6 text-[#18181b] transition-colors group-hover:text-[#f25a05]">{post.title}</span>
-          <span className="mt-2 block text-xs font-bold uppercase leading-5 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} Â· {calculateReadTime(post.content)} min read</span>
-          {category ? <span className="mt-2 inline-flex text-xs font-bold text-[#f25a05]">{category.name}</span> : null}
+      <Link className="group block cursor-pointer" to={`/blog/${post.slug}`} aria-label={`Read ${post.title}`}>
+        <span className="block overflow-hidden rounded-[0.75rem] bg-[#f7f7f6]"><img className="aspect-[16/10] w-full object-cover object-center transition duration-300 group-hover:scale-[1.018]" src={post.featured_image_url ?? ''} alt={post.featured_image_alt || post.title} loading="lazy" decoding="async" /></span>
+        <span className="mt-5 block min-w-0">
+          {category ? <span className="text-xs font-bold uppercase tracking-normal text-[#f25a05]">{category.name}</span> : null}
+          <span className="mt-2 line-clamp-2 block text-[1.2rem] font-semibold leading-tight text-[#18181b] transition-colors group-hover:text-[#f25a05]">{post.title}</span>
+          <span className="mt-3 block text-xs font-bold uppercase leading-5 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</span>
         </span>
       </Link>
     </article>
   );
 }
-
 function CommentsSection({ comments, errors, message, submitError, submitting, values, onChange, onSubmit }: { comments: PublicBlogComment[]; errors: CommentErrors; message: string; submitError: string; submitting: boolean; values: { name: string; email: string; comment: string }; onChange: (field: keyof typeof values, value: string) => void; onSubmit: (event: FormEvent<HTMLFormElement>) => void }) {
   return (
     <section className="bg-white px-5 pb-16 sm:px-6 sm:pb-20 lg:pb-24" aria-labelledby="comments-heading">
