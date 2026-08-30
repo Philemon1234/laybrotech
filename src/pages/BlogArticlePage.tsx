@@ -1,7 +1,8 @@
-import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
+ï»¿import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
 import { AlertCircle, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
+import { PageLoader } from '@/components/common/PageLoader';
 import { Footer } from '@/components/layout/Footer';
 import blogHeroImage from '@/assets/images/blog-hero.webp';
 import { FinalCTA } from '@/sections/home/FinalCTA';
@@ -17,6 +18,8 @@ export function BlogArticlePage() {
   const [comments, setComments] = useState<PublicBlogComment[]>([]);
   const [categories, setCategories] = useState<PublicBlogCategory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadedSlug, setLoadedSlug] = useState('');
+  const [loadError, setLoadError] = useState('');
   const [values, setValues] = useState({ name: '', email: '', comment: '' });
   const [errors, setErrors] = useState<CommentErrors>({});
   const [message, setMessage] = useState('');
@@ -24,30 +27,61 @@ export function BlogArticlePage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
+    let active = true;
+
     async function load() {
       setLoading(true);
-      const loaded = await getPublicPostBySlug(slug);
-      setPost(loaded);
-      if (loaded) {
-        const [commentData, relatedData, categoryData] = await Promise.all([getApprovedComments(loaded.id), getRelatedPosts(loaded, 5), getPublicCategories()]);
-        setComments(commentData);
-        setRelated(relatedData);
-        setCategories(categoryData);
-        const title = loaded.seo_title || loaded.title;
-        const description = loaded.meta_description || loaded.excerpt || '';
-        document.title = title + ' | Laybrotech';
-        setMeta('meta[name="description"]', 'name', 'description', description);
-        setMeta('meta[property="og:title"]', 'property', 'og:title', title);
-        setMeta('meta[property="og:description"]', 'property', 'og:description', description);
-        if (loaded.featured_image_url) setMeta('meta[property="og:image"]', 'property', 'og:image', loaded.featured_image_url);
-        if (loaded.canonical_url) setCanonical(loaded.canonical_url);
+      setLoadError('');
+
+      try {
+        const loaded = await getPublicPostBySlug(slug);
+        if (!active) return;
+
+        setPost(loaded);
+        if (loaded) {
+          const [commentData, relatedData, categoryData] = await Promise.all([getApprovedComments(loaded.id), getRelatedPosts(loaded, 5), getPublicCategories()]);
+          if (!active) return;
+
+          setComments(commentData);
+          setRelated(relatedData);
+          setCategories(categoryData);
+          const title = loaded.seo_title || loaded.title;
+          const description = loaded.meta_description || loaded.excerpt || '';
+          document.title = title + ' | Laybrotech';
+          setMeta('meta[name="description"]', 'name', 'description', description);
+          setMeta('meta[property="og:title"]', 'property', 'og:title', title);
+          setMeta('meta[property="og:description"]', 'property', 'og:description', description);
+          if (loaded.featured_image_url) setMeta('meta[property="og:image"]', 'property', 'og:image', loaded.featured_image_url);
+          if (loaded.canonical_url) setCanonical(loaded.canonical_url);
+        } else {
+          setComments([]);
+          setRelated([]);
+          setCategories([]);
+        }
+      } catch {
+        if (!active) return;
+        setPost(null);
+        setComments([]);
+        setRelated([]);
+        setCategories([]);
+        setLoadError("We couldn't load this article right now.");
+      } finally {
+        if (active) {
+          setLoadedSlug(slug);
+          setLoading(false);
+        }
       }
-      setLoading(false);
     }
-    void load().catch(() => setLoading(false));
+
+    void load();
+
+    return () => {
+      active = false;
+    };
   }, [slug]);
 
-  if (loading) return <><section className="bg-white px-5 py-28 sm:px-6 lg:py-32"><div className="mx-auto max-w-[46rem] text-center"><p className="type-eyebrow">Loading Article</p><h1 className="mt-4 text-[2.45rem] font-semibold leading-tight text-[#18181b]">Preparing this insight.</h1></div></section><Footer /></>;
+  if (loading || loadedSlug !== slug) return <PageLoader />;
+  if (loadError) return <><section className="bg-white px-5 py-28 sm:px-6 lg:py-32"><div className="mx-auto max-w-[46rem] text-center"><p className="type-eyebrow">Article Error</p><h1 className="mt-4 text-[2.45rem] font-semibold leading-tight text-[#18181b]">Article could not be loaded.</h1><p className="mx-auto mt-5 max-w-[34rem] text-base leading-7 text-[#5f5a56]">{loadError}</p><Link className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#f25a05]" to="/blog"><ArrowLeft className="size-4" />Back to Blog</Link></div></section><Footer /></>;
   if (!post) return <><section className="bg-white px-5 py-28 sm:px-6 lg:py-32"><div className="mx-auto max-w-[46rem] text-center"><p className="type-eyebrow">Article Not Found</p><h1 className="mt-4 text-[2.45rem] font-semibold leading-tight text-[#18181b]">This article is not available.</h1><Link className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#f25a05]" to="/blog"><ArrowLeft className="size-4" />Back to Blog</Link></div></section><Footer /></>;
 
   const currentPost = post;
@@ -134,7 +168,7 @@ function ArticleMeta({ post, variant = 'default' }: { post: PublicBlogPost; vari
           <p className={isHero ? 'mt-0.5 text-sm text-white' : 'mt-0.5 text-sm text-[#766e67]'}>Laybrotech Team</p>
         </div>
       </div>
-      <p className={isHero ? 'text-sm font-bold uppercase leading-6 text-white' : 'text-sm font-bold uppercase leading-6 text-[#766e67]'}>{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</p>
+      <p className={isHero ? 'text-sm font-bold uppercase leading-6 text-white' : 'text-sm font-bold uppercase leading-6 text-[#766e67]'}>{formatDate(post.published_at ?? post.scheduled_at)} Â· {calculateReadTime(post.content)} min read</p>
     </div>
   );
 }
@@ -189,7 +223,7 @@ function TrendingItem({ post }: { post: PublicBlogPost }) {
         <span className="mt-5 block min-w-0">
           {category ? <span className="text-xs font-bold uppercase tracking-normal text-[#f25a05]">{category.name}</span> : null}
           <span className="mt-2 line-clamp-2 block text-[1.2rem] font-semibold leading-tight text-[#18181b] transition-colors group-hover:text-[#f25a05]">{post.title}</span>
-          <span className="mt-3 block text-xs font-bold uppercase leading-5 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} · {calculateReadTime(post.content)} min read</span>
+          <span className="mt-3 block text-xs font-bold uppercase leading-5 text-[#766e67]">{formatDate(post.published_at ?? post.scheduled_at)} Â· {calculateReadTime(post.content)} min read</span>
         </span>
       </Link>
     </article>
@@ -222,6 +256,7 @@ function fieldClass(error: boolean, multiline = false) { return 'w-full rounded-
 function getInitials(name: string) { const parts = name.trim().split(/\s+/).filter(Boolean); return ((parts[0]?.[0] ?? '?') + (parts[1]?.[0] ?? '')).toUpperCase(); }
 function setMeta(selector: string, attr: 'name' | 'property', key: string, content: string) { let el = document.head.querySelector<HTMLMetaElement>(selector); if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); } el.setAttribute('content', content); }
 function setCanonical(href: string) { let el = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]'); if (!el) { el = document.createElement('link'); el.rel = 'canonical'; document.head.appendChild(el); } el.href = href; }
+
 
 
 

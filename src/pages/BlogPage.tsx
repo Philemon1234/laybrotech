@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { ArrowRight, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import { PageLoader } from '@/components/common/PageLoader';
 import { Footer } from '@/components/layout/Footer';
 import { FinalCTA } from '@/sections/home/FinalCTA';
 import { calculateReadTime, formatDate, getPublicPosts } from '@/lib/supabaseBlog';
@@ -14,8 +15,26 @@ export function BlogPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    getPublicPosts().then(setPosts).catch(() => setError('Blog articles could not be loaded right now.')).finally(() => setLoading(false));
+    let active = true;
+
+    setError('');
+    getPublicPosts()
+      .then((data) => {
+        if (active) setPosts(data);
+      })
+      .catch(() => {
+        if (active) setError('Blog articles could not be loaded right now.');
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
+
+  if (loading) return <PageLoader />;
 
   return (
     <>
@@ -40,8 +59,7 @@ export function BlogPage() {
 
       <section className="bg-white px-5 py-16 sm:px-6 sm:py-20 lg:py-24" aria-label="Blog articles">
         <div className="mx-auto w-full max-w-container">
-          {error ? <p className="mb-8 rounded-[1rem] border border-[#ead8c8] bg-white px-4 py-3 text-sm font-bold text-[#5f5a56]">{error}</p> : null}
-          {loading ? <p className="py-10 text-sm font-bold text-[#766e67]">Loading articles...</p> : posts.length ? (
+          {error ? <p className="mb-8 rounded-[1rem] border border-[#ead8c8] bg-white px-4 py-3 text-sm font-bold text-[#5f5a56]">{error}</p> : posts.length ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {posts.map((post) => <BlogCard key={post.id} post={post} />)}
             </div>
@@ -76,4 +94,6 @@ export function BlogCard({ post }: { post: PublicBlogPost }) {
 function EmptyBlogState({ compact = false }: { compact?: boolean }) {
   return <div className={'mx-auto max-w-[42rem] rounded-[1.35rem] border border-[#ead8c8] bg-white p-8 text-center shadow-[0_18px_45px_rgb(63_45_30/0.06)] ' + (compact ? 'mt-10' : 'my-20')}><Search className="mx-auto size-10 text-[#f25a05]" aria-hidden="true" /><h2 className="mt-4 text-2xl font-semibold text-[#18181b]">No published articles yet.</h2><p className="mt-3 text-base leading-7 text-[#5f5a56]">Published Laybrotech insights will appear here.</p></div>;
 }
+
+
 

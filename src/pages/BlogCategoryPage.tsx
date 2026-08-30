@@ -1,6 +1,7 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { PageLoader } from '@/components/common/PageLoader';
 import { Footer } from '@/components/layout/Footer';
 import { FinalCTA } from '@/sections/home/FinalCTA';
 import { BlogCard } from '@/pages/BlogPage';
@@ -11,23 +12,45 @@ export function BlogCategoryPage() {
   const { slug = '' } = useParams();
   const [posts, setPosts] = useState<PublicBlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadedSlug, setLoadedSlug] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
+    let active = true;
+
     setLoading(true);
+    setError('');
     getPublicPostsByCategory(slug)
       .then((data) => {
+        if (!active) return;
+
         setPosts(data);
         const category = data[0]?.blog_categories;
         document.title = `${category?.name ?? 'Blog Category'} Articles | Laybrotech`;
         setMeta('meta[name="description"]', 'name', 'description', category?.description || `Explore ${category?.name ?? 'Laybrotech'} articles and insights from Laybrotech.`);
       })
-      .catch(() => setError('Category articles could not be loaded right now.'))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (!active) return;
+
+        setPosts([]);
+        setError('Category articles could not be loaded right now.');
+      })
+      .finally(() => {
+        if (active) {
+          setLoadedSlug(slug);
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
   }, [slug]);
 
   const category = useMemo(() => posts[0]?.blog_categories ?? null, [posts]);
   const heading = category?.name ?? titleFromSlug(slug);
+
+  if (loading || loadedSlug !== slug) return <PageLoader />;
 
   return (
     <>
@@ -38,8 +61,7 @@ export function BlogCategoryPage() {
           <h1 id="category-heading" className="mt-3 text-[clamp(2.3rem,5vw,3.5rem)] font-semibold leading-tight text-[#18181b]">{heading}</h1>
           {category?.description ? <p className="mt-4 max-w-[48rem] text-[1.05rem] leading-8 text-[#5f5a56]">{category.description}</p> : null}
 
-          {error ? <p className="mt-8 rounded-[1rem] border border-[#ead8c8] bg-white px-4 py-3 text-sm font-bold text-[#5f5a56]">{error}</p> : null}
-          {loading ? <p className="py-10 text-sm font-bold text-[#766e67]">Loading articles...</p> : posts.length ? (
+          {error ? <p className="mt-8 rounded-[1rem] border border-[#ead8c8] bg-white px-4 py-3 text-sm font-bold text-[#5f5a56]">{error}</p> : posts.length ? (
             <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {posts.map((post) => <BlogCard key={post.id} post={post} />)}
             </div>
@@ -65,3 +87,5 @@ function setMeta(selector: string, attr: 'name' | 'property', key: string, conte
   }
   el.setAttribute('content', content);
 }
+
+
