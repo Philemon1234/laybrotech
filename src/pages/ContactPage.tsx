@@ -1,10 +1,11 @@
-import { type FormEvent, type ReactNode, useMemo, useState } from 'react';
+﻿import { type FormEvent, type ReactNode, useMemo, useState } from 'react';
 import { ArrowRight, Check, Clock, Headphones, Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
 
 import heroImage from '@/assets/images/home-hero-business-growth.webp';
 import { Footer } from '@/components/layout/Footer';
 import { ButtonLink } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
+import { submitEnquiry } from '@/lib/enquiries';
 import { FinalCTA } from '@/sections/home/FinalCTA';
 
 type FormValues = {
@@ -12,11 +13,11 @@ type FormValues = {
   email: string;
   phone: string;
   company: string;
-  service: string;
+  subject: string;
   message: string;
 };
 
-type FormErrors = Partial<Record<'name' | 'email' | 'message', string>>;
+type FormErrors = Partial<Record<'name' | 'email' | 'subject' | 'message', string>>;
 
 type ContactIcon = typeof Phone;
 
@@ -43,11 +44,13 @@ export function ContactPage() {
     email: '',
     phone: '',
     company: '',
-    service: 'General Enquiry',
+    subject: '',
     message: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [statusMessage, setStatusMessage] = useState('');
+  const [statusType, setStatusType] = useState<'success' | 'error' | ''>('');
+  const [submitting, setSubmitting] = useState(false);
 
   const whatsappHref = useMemo(() => {
     const digits = phoneNumber.replace(/\D/g, '');
@@ -58,6 +61,7 @@ export function ContactPage() {
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
     setStatusMessage('');
+    setStatusType('');
   }
 
   function validateForm() {
@@ -73,6 +77,10 @@ export function ContactPage() {
       nextErrors.email = 'Enter a valid email address.';
     }
 
+    if (!values.subject.trim()) {
+      nextErrors.subject = 'Subject is required.';
+    }
+
     if (!values.message.trim()) {
       nextErrors.message = 'Message is required.';
     }
@@ -81,15 +89,39 @@ export function ContactPage() {
     return Object.keys(nextErrors).length === 0;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (submitting) return;
+
     if (!validateForm()) {
+      setStatusType('error');
       setStatusMessage('Please complete the required fields before sending.');
       return;
     }
 
-    setStatusMessage('This form is ready for backend/email integration. For now, please call or email Laybrotech directly.');
+    setSubmitting(true);
+    setStatusMessage('');
+    setStatusType('');
+
+    try {
+      await submitEnquiry({
+        full_name: values.name.trim(),
+        email: values.email.trim(),
+        phone: values.phone.trim() || null,
+        company: values.company.trim() || null,
+        subject: values.subject.trim(),
+        message: values.message.trim(),
+      });
+      setValues({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
+      setStatusType('success');
+      setStatusMessage('Thank you. Your enquiry has been received and our team will get back to you shortly.');
+    } catch {
+      setStatusType('error');
+      setStatusMessage("We couldn't send your enquiry right now. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -121,17 +153,13 @@ export function ContactPage() {
                 <FormField id="phone-number" label="Phone / WhatsApp">
                   <input id="phone-number" name="phone" type="tel" autoComplete="tel" value={values.phone} onChange={(event) => updateValue('phone', event.target.value)} className={inputClass(false)} />
                 </FormField>
-                <FormField id="company-name" label="Company / Organisation">
+                <FormField id="company-name" label="Company or Organization">
                   <input id="company-name" name="company" type="text" autoComplete="organization" value={values.company} onChange={(event) => updateValue('company', event.target.value)} className={inputClass(false)} />
                 </FormField>
               </div>
 
-              <FormField id="service-interest" label="Service Interested In">
-                <select id="service-interest" name="service" value={values.service} onChange={(event) => updateValue('service', event.target.value)} className={inputClass(false)}>
-                  {serviceOptions.map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
+              <FormField id="enquiry-subject" label="Subject" error={errors.subject} required>
+                <input id="enquiry-subject" name="subject" type="text" value={values.subject} onChange={(event) => updateValue('subject', event.target.value)} className={inputClass(Boolean(errors.subject))} aria-invalid={Boolean(errors.subject)} aria-describedby={errors.subject ? 'enquiry-subject-error' : undefined} />
               </FormField>
 
               <FormField id="message" label="Message" error={errors.message} required>
@@ -139,13 +167,13 @@ export function ContactPage() {
               </FormField>
 
               {statusMessage ? (
-                <p className="rounded-[0.9rem] border border-[#ead8c8] bg-[#fffaf5] px-4 py-3 text-sm font-semibold leading-6 text-[#5f5a56]" role="status">
+                <p className={cn('rounded-[0.9rem] border px-4 py-3 text-sm font-semibold leading-6', statusType === 'success' ? 'border-green-200 bg-green-50 text-green-700' : 'border-[#ead8c8] bg-[#fffaf5] text-[#5f5a56]')} role="status">
                   {statusMessage}
                 </p>
               ) : null}
 
-              <button className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-button bg-[#f25a05] px-6 text-sm font-bold text-white transition-colors duration-smooth hover:bg-[#d94f04] sm:w-fit" type="submit">
-                Send Enquiry
+              <button className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-button bg-[#f25a05] px-6 text-sm font-bold text-white transition-colors duration-smooth hover:bg-[#d94f04] disabled:cursor-not-allowed disabled:bg-[#f6b38c] sm:w-fit" type="submit" disabled={submitting}>
+                {submitting ? 'Sending...' : 'Send Inquiry'}
                 <ArrowRight className="size-4 transition-transform duration-smooth group-hover:translate-x-1" aria-hidden="true" />
               </button>
             </form>
@@ -258,3 +286,6 @@ function FormField({ label, id, error, required = false, children }: { label: st
 function inputClass(hasError: boolean) {
   return cn('h-12 w-full rounded-[0.9rem] border bg-white px-4 text-sm font-semibold text-[#18181b] outline-none transition-colors duration-200 placeholder:text-[#9f958d] focus:border-[#f25a05] focus:ring-4 focus:ring-[#f25a05]/10', hasError ? 'border-[#b42318]' : 'border-[#e5ded6]');
 }
+
+
+
