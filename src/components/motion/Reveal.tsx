@@ -1,4 +1,4 @@
-﻿import { type ReactNode, useRef } from 'react';
+﻿import { type CSSProperties, type ReactNode, useRef } from 'react';
 
 import { cn } from '@/lib/cn';
 
@@ -19,6 +19,17 @@ export function useReveal<T extends HTMLElement>() {
   return { ref, visible: true };
 }
 
-export function Reveal({ children, as: Component = 'div', className }: RevealProps) {
-  return <Component className={cn(className)}>{children}</Component>;
+export function Reveal({ children, as: Component = 'div', className, direction = 'up', delay = 120 }: RevealProps) {
+  return (
+    <Component
+      className={cn('scroll-reveal', `scroll-reveal--${direction}`, className)}
+      data-scroll-reveal={direction}
+      style={{ '--reveal-delay': `${delay}ms` } as CSSProperties}
+    >
+      {children}
+    </Component>
+  );
 }
+
+
+
