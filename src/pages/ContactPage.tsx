@@ -1,5 +1,5 @@
 ﻿import { type FormEvent, type ReactNode, useMemo, useState } from 'react';
-import { ArrowRight, Check, Clock, Headphones, Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
+import { ArrowRight, Headphones, Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
 
 import heroImage from '@/assets/images/home-hero-business-growth.webp';
 import { Footer } from '@/components/layout/Footer';
@@ -182,7 +182,7 @@ export function ContactPage() {
           <ContactDetails whatsappHref={whatsappHref} />
         </div>
       </main>
-      <OfficeSupportInfo />
+      <ContactMap />
       <FinalCTA heading="Have a Project in Mind?" primaryLabel="Start Your Project" primaryHref="/contact#contact-form" secondaryLabel="Talk to Sales" secondaryHref={phoneHref} />
       <Footer />
     </>
@@ -251,22 +251,20 @@ function ContactDetails({ whatsappHref }: { whatsappHref?: string }) {
   );
 }
 
-function OfficeSupportInfo() {
+function ContactMap() {
+  const mapQuery = encodeURIComponent(officeAddressLines.replace(/\n/g, ' '));
+
   return (
-    <section className="bg-white px-5 py-20 sm:px-6 sm:py-24 lg:py-28" aria-labelledby="office-support-heading">
-      <div className="mx-auto grid w-full max-w-container items-stretch gap-8 lg:grid-cols-[0.52fr_0.48fr] lg:gap-10">
-        <div className="rounded-[1.75rem] border border-[#ead8c8] bg-[#fbf7f2] p-7 sm:p-9 lg:p-10">
-          <p className="type-eyebrow">Office & Support</p>
-          <h2 id="office-support-heading" className="mt-4 text-[2.15rem] font-semibold leading-tight text-[#18181b] sm:text-[2.65rem] lg:text-[3rem]">Visit or Reach Us Directly.</h2>
-          <p className="mt-5 max-w-[38rem] text-base leading-7 text-[#5f5a56] sm:text-lg sm:leading-8">Contact Laybrotech for sales enquiries, project consultations, website support, hosting guidance, and business technology discussions.</p>
-          <ul className="mt-8 grid gap-3" aria-label="Contact support options">
-            {supportPoints.map((point) => <li className="flex items-center gap-3 text-sm font-bold text-[#18181b]" key={point}><Check className="size-4 text-[#16a34a]" aria-hidden="true" />{point}</li>)}
-          </ul>
-        </div>
-        <div className="flex min-h-[24rem] flex-col justify-between rounded-[1.75rem] border border-[#ead8c8] bg-[#171717] p-7 text-[#fffaf5] shadow-[0_22px_60px_rgb(23_23_23/0.16)] sm:p-9 lg:p-10">
-          <div><span className="flex size-12 items-center justify-center rounded-control bg-white/8 text-[#ff7a2b]"><MapPin className="size-6" aria-hidden="true" /></span><h3 className="mt-6 text-[2rem] font-semibold leading-tight">Laybrotech Office</h3><p className="mt-4 whitespace-pre-line text-base leading-7 text-[#e8dfd6]">{officeAddressLines}</p></div>
-          <div className="mt-8 grid gap-3 border-t border-white/10 pt-6 text-sm font-semibold text-[#e8dfd6]"><p className="flex items-center gap-3"><Clock className="size-4 text-[#ff7a2b]" aria-hidden="true" />Contact us to arrange a consultation.</p><a className="group inline-flex w-fit items-center gap-2 text-[#ff7a2b] transition-colors duration-smooth hover:text-[#ffb07a]" href={phoneHref}>Call Laybrotech<ArrowRight className="size-4 transition-transform duration-smooth group-hover:translate-x-1" aria-hidden="true" /></a></div>
-        </div>
+    <section className="bg-white px-5 py-20 sm:px-6 sm:py-24 lg:py-28" aria-label="Laybrotech office location map">
+      <div className="mx-auto w-full max-w-container overflow-hidden rounded-[1.35rem] border border-[#ead8c8] bg-white shadow-[0_18px_45px_rgb(63_45_30/0.06)]">
+        <iframe
+          className="h-[24rem] w-full border-0 sm:h-[30rem] lg:h-[34rem]"
+          title="Laybrotech office location on Google Maps"
+          src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+        />
       </div>
     </section>
   );
@@ -286,6 +284,7 @@ function FormField({ label, id, error, required = false, children }: { label: st
 function inputClass(hasError: boolean) {
   return cn('h-12 w-full rounded-[0.9rem] border bg-white px-4 text-sm font-semibold text-[#18181b] outline-none transition-colors duration-200 placeholder:text-[#9f958d] focus:border-[#f25a05] focus:ring-4 focus:ring-[#f25a05]/10', hasError ? 'border-[#b42318]' : 'border-[#e5ded6]');
 }
+
 
 
 
